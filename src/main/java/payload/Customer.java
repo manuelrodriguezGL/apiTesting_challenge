@@ -1,6 +1,7 @@
 package payload;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonPropertyOrder({"id", "email", "first_name", "last_name", "username", "password", "billing", "shipping"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer {
 
     private String id;
@@ -16,8 +18,8 @@ public class Customer {
     private String last_name;
     private String username;
     private String password;
-    private List<BillingAddress> billing;
-    private List<ShippingAddress> shipping;
+    private BillingAddress billing;
+    private ShippingAddress shipping;
 
     public Customer() {
         id = "";
@@ -26,8 +28,8 @@ public class Customer {
         last_name = "";
         username = "";
         password = "";
-        billing = new ArrayList<>();
-        shipping = new ArrayList<>();
+        billing = new BillingAddress();
+        shipping = new ShippingAddress();
     }
 
     @JsonGetter("id")
@@ -94,22 +96,22 @@ public class Customer {
     }
 
     @JsonGetter("billing")
-    public List<BillingAddress> getBilling() {
+    public BillingAddress getBilling() {
         return billing;
     }
 
     @JsonSetter("billing")
-    public void setBilling(List<BillingAddress> billing) {
+    public void setBilling(BillingAddress billing) {
         this.billing = billing;
     }
 
     @JsonGetter("shipping")
-    public List<ShippingAddress> getShipping() {
+    public ShippingAddress getShipping() {
         return shipping;
     }
 
     @JsonSetter("shipping")
-    public void setShipping(List<ShippingAddress> shipping) {
+    public void setShipping(ShippingAddress shipping) {
         this.shipping = shipping;
     }
 }

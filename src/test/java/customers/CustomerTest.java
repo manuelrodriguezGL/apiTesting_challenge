@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import payload.Customer;
 import testBase.TestBase;
 
 public class CustomerTest extends TestBase {
@@ -21,7 +22,9 @@ public class CustomerTest extends TestBase {
 
         Response response = requestSpecification.given().when().get(requestPath);
 
-//        System.out.println("Response body: " + "\n" + response.asPrettyString());
+        System.out.println("Response body: " + "\n" + response.asPrettyString());
+
+        Customer customer = response.as(Customer.class);
 
         softAssert.assertEquals(response.getStatusCode(), 200);
         softAssert.assertEquals(response.jsonPath().get("id").toString(), customerId);

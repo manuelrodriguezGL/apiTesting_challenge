@@ -1,10 +1,12 @@
 package payload;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 @JsonPropertyOrder({"email", "phone"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingAddress extends AbstractAddress {
     private String email;
     private String phone;
