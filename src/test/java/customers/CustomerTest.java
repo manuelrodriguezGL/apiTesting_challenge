@@ -1,47 +1,32 @@
 package customers;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.http.Header;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import testBase.TestBase;
-
-import static io.restassured.RestAssured.given;
 
 public class CustomerTest extends TestBase {
 
-    private static RequestSpecification requestSpecification;
-    private static String baseUrl = "http://52.14.147.231/wp-json/wc/v2";
 
+    @Test(description = "Get Customers by ID", groups = {"Customers"})
+    @Parameters({"path", "viewContext", "customerId"})
+    public static void getCustomers(String path, String context, String customerId) {
+        SoftAssert softAssert = new SoftAssert();
 
-    @BeforeClass(alwaysRun = true)
-    public static void authenticate() {
-        RestAssured.baseURI = baseUrl;
+        String requestPath = baseUrl + path + "/{id}";
 
-        Header header = new Header("Accept", ContentType.JSON.getAcceptHeader());
+        requestSpecification.pathParams("id", customerId);
+        requestSpecification.queryParams("context", context);
 
-        requestSpecification = given().auth().preemptive().basic("auto", "auto");
-//        String token = given().auth().preemptive().basic("auto", "auto").toString();
-        Response response = requestSpecification.get();
+        Response response = requestSpecification.given().when().get(requestPath);
 
+//        System.out.println("Response body: " + "\n" + response.asPrettyString());
 
-//        System.out.println(token);
-        Assert.assertEquals(200, response.getStatusCode());
-    }
-
-    @Test(description = "Get Customers", groups = {"Customers"})
-    public static void getCustomers() {
-        String path = "/customers?context=view";
-
-        requestSpecification = given().auth().preemptive().basic("auto", "auto");
-        Response response = requestSpecification.given().when().get(baseUrl + path);
-        System.out.println(response.asPrettyString());
-        Assert.assertEquals(200, response.getStatusCode());
-
+        softAssert.assertEquals(response.getStatusCode(), 200);
+        softAssert.assertEquals(response.jsonPath().get("id").toString(), customerId);
+        softAssert.assertAll(String.format("%s %s %s",
+                GLOBAL_TEST_FAILED_MESSAGE, "Could not find customer with ID :", customerId));
     }
 
 }
