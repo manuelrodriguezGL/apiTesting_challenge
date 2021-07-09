@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--NOTE: There's a known TestNG bug. Add this param to the JVM [-Dtestng.dtd.http=true]-->
+<!--https://github.com/cbeust/testng/issues/2022-->
+
+<suite name="Regression">
+    <test name="API Tests">
+        <groups>
+            <run>
+                <include name="Customers"/>
+                <!--Add your EXCLUDED groups here-->
+                <exclude name="excluded"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="customers.CustomerTest"/>
+        </classes>
+    </test>
+</suite>
