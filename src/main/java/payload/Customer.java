@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @JsonPropertyOrder({"id", "email", "first_name", "last_name", "username", "password", "billing", "shipping"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer {
@@ -30,6 +27,17 @@ public class Customer {
         password = "";
         billing = new BillingAddress();
         shipping = new ShippingAddress();
+    }
+
+    public Customer(String email, String first_name, String last_name, String username, String password) {
+        this.id = "";
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.username = username;
+        this.password = password;
+        this.billing = null;
+        this.shipping = null;
     }
 
     @JsonGetter("id")
@@ -85,10 +93,10 @@ public class Customer {
         this.username = username;
     }
 
-//    @JsonGetter("password")
-//    public String getPassword() {
-//        return password;
-//    }
+    @JsonGetter("password")
+    public String getPassword() {
+        return password;
+    }
 
     @JsonSetter("password")
     public void setPassword(String password) {

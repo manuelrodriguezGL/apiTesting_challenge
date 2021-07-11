@@ -8,15 +8,15 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @JsonPropertyOrder({"first_name", "last_name", "company", "address_1", "address_2", "city", "postcode", "country", "state"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractAddress {
-    private String first_name;
-    private String last_name;
-    private String company;
-    private String address_1;
-    private String address_2;
-    private String city;
-    private String postcode;
-    private String country;
-    private String state;
+    protected String first_name;
+    protected String last_name;
+    protected String company;
+    protected String address_1;
+    protected String address_2;
+    protected String city;
+    protected String postcode;
+    protected String country;
+    protected String state;
 
     @JsonGetter("first_name")
     public String getFirst_name() {

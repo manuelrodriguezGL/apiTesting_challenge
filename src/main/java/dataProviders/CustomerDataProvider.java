@@ -17,6 +17,7 @@ public class CustomerDataProvider {
         return ExcelFileReader.readFile(propertiesArray.get(0), propertiesArray.get(1));
     }
 
+    @DataProvider(name = "BillingAddress")
     private Object[][] billingAddressData() throws IOException{
         ArrayList<String> propertiesArray =
                 CommonUtils.getPropertiesArray(new ArrayList<>(Arrays.asList("customer_excel_path", "billing_excel_sheet")));
@@ -24,6 +25,7 @@ public class CustomerDataProvider {
         return ExcelFileReader.readFile(propertiesArray.get(0), propertiesArray.get(1));
     }
 
+    @DataProvider(name = "ShippingAddress")
     private Object[][] shippingAddressData() throws IOException{
         ArrayList<String> propertiesArray =
                 CommonUtils.getPropertiesArray(new ArrayList<>(Arrays.asList("customer_excel_path", "shipping_excel_sheet")));
