@@ -1,5 +1,6 @@
 package customers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dataProviders.CustomerDataProvider;
 import io.restassured.http.ContentType;
@@ -8,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import payload.BillingAddress;
 import payload.Customer;
 import testBase.TestBase;
 
@@ -43,8 +45,7 @@ public class CustomerTest extends TestBase {
     public static void postCustomer(String email, String first_name, String last_name, String username,
                                     String password) {
         String requestPath = baseUrl + PATH;
-        requestSpecification.queryParams("context", CONTEXT);
-        requestSpecification.formParams(fillCustomerData(email, first_name, last_name, username, password));
+        requestSpecification.formParams(fillCustomerData("", email, first_name, last_name, username, password));
 
         Response response = requestSpecification.given()
                 .contentType(ContentType.URLENC)
@@ -57,8 +58,27 @@ public class CustomerTest extends TestBase {
                         GLOBAL_TEST_FAILED_MESSAGE, "Could not find customer with username :", username));
     }
 
-    @Test(description = "Puts a new billing address into customer",
-    groups = "Customers",  dataProvider = "Customer", dataProviderClass = CustomerDataProvider.class)
+    @Test(description = "Puts a new billing address into existing customer",
+            groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
+    public static void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
+                                                 String address_1, String address_2, String city, String state,
+                                                 String postcode, String country, String email, String phone) throws JsonProcessingException {
+
+        String requestPath = baseUrl + PATH + "/{id}";
+        requestSpecification.pathParams("id", customerId);
+        requestSpecification.body(fillBillingAddressData(first_name, last_name, company, address_1, address_2,
+                city, state, postcode, country, email, phone));
+
+        Response response = requestSpecification.given()
+                .contentType(ContentType.JSON)
+                .when()
+                .put(requestPath);
+        response.then().log().all();
+
+        Assert.assertEquals(response.statusCode(), 200,
+                String.format("%s %s %s",
+                        GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
+    }
 
     /**
      * Creates a Customer object with parameters, and returns a Map of values, that is going to be used as
@@ -71,11 +91,40 @@ public class CustomerTest extends TestBase {
      * @param password   Customer password
      * @return A Map object with all values
      */
-    private static Map fillCustomerData(String email, String first_name, String last_name, String username,
-                                        String password) {
-        Customer customer = new Customer(email, first_name, last_name, username, password);
+    private static Map fillCustomerData(String customerId, String email, String first_name, String last_name,
+                                        String username, String password) {
+        Customer customer = new Customer(customerId, email, first_name, last_name, username, password);
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.convertValue(customer, Map.class);
+    }
+
+    /**
+     * Creates a Billing address object, and then maps it into a JSON string, with the format needed for a
+     * request body that uses this address
+     *
+     * @param first_name Customer first name
+     * @param last_name  Customer last name
+     * @param company    Customer Company
+     * @param address_1  Customer address line 1
+     * @param address_2  Customer address line 2
+     * @param city       Customer city
+     * @param state      Customer state
+     * @param postcode   Customer postal code
+     * @param country    Customer country
+     * @param email      Customer email
+     * @param phone      Customer phone
+     * @return A string representing the billing address request body
+     * @throws JsonProcessingException
+     */
+    private static String fillBillingAddressData(String first_name, String last_name, String company,
+                                                 String address_1, String address_2, String city, String state,
+                                                 String postcode, String country, String email, String phone)
+            throws JsonProcessingException {
+
+        BillingAddress billingAddress = new BillingAddress(first_name, last_name, company, address_1, address_2,
+                city, state, postcode, country, email, phone);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return "{ \"billing\" : " + objectMapper.writeValueAsString(billingAddress) + "}";
     }
 }
 

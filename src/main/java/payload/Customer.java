@@ -29,8 +29,8 @@ public class Customer {
         shipping = new ShippingAddress();
     }
 
-    public Customer(String email, String first_name, String last_name, String username, String password) {
-        this.id = "";
+    public Customer(String id, String email, String first_name, String last_name, String username, String password) {
+        this.id = id;
         this.email = email;
         this.first_name = first_name;
         this.last_name = last_name;
