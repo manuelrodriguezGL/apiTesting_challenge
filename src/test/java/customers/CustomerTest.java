@@ -3,9 +3,11 @@ package customers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dataProviders.CustomerDataProvider;
+import endpoints.UserEndpoint;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -13,25 +15,26 @@ import payload.BillingAddress;
 import payload.Customer;
 import testBase.TestBase;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class CustomerTest extends TestBase {
 
     private static final String PATH = "/customers";
     private static final String CONTEXT = "view";
+    private static UserEndpoint userEndpoint;
 
-    @Test(description = "Get Customers by ID", groups = {"Excluded"})
+    @BeforeMethod(alwaysRun = true)
+    public void testSetup(){
+        userEndpoint = new UserEndpoint();
+    }
+
+    @Test(description = "Get Customers by ID", groups = {"Customers"})
     @Parameters({"customerId"})
-    public static void getCustomers(String customerId) {
+    public static void getCustomers(String customerId) throws IOException {
         SoftAssert softAssert = new SoftAssert();
 
-        String requestPath = baseUrl + PATH + "/{id}";
-
-        requestSpecification.pathParams("id", customerId);
-        requestSpecification.queryParams("context", CONTEXT);
-
-        Response response = requestSpecification.given().when().get(requestPath);
-
+        Response response = userEndpoint.getCustomer(customerId);
         response.then().log().all();
 
         softAssert.assertEquals(response.getStatusCode(), 200);
@@ -59,7 +62,7 @@ public class CustomerTest extends TestBase {
     }
 
     @Test(description = "Puts a new billing address into existing customer",
-            groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
+            groups = "Excluded", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public static void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                                  String address_1, String address_2, String city, String state,
                                                  String postcode, String country, String email, String phone) throws JsonProcessingException {
