@@ -3,7 +3,7 @@ package customers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dataProviders.CustomerDataProvider;
-import endpoints.UserEndpoint;
+import endpoints.CustomerEndpoint;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -22,11 +22,11 @@ public class CustomerTest extends TestBase {
 
     private static final String PATH = "/customers";
     private static final String CONTEXT = "view";
-    private static UserEndpoint userEndpoint;
+    private static CustomerEndpoint customerEndpoint;
 
     @BeforeMethod(alwaysRun = true)
     public void testSetup(){
-        userEndpoint = new UserEndpoint();
+        customerEndpoint = new CustomerEndpoint();
     }
 
     @Test(description = "Get Customers by ID", groups = {"Customers"})
@@ -34,7 +34,7 @@ public class CustomerTest extends TestBase {
     public static void getCustomers(String customerId) throws IOException {
         SoftAssert softAssert = new SoftAssert();
 
-        Response response = userEndpoint.getCustomer(customerId);
+        Response response = customerEndpoint.getCustomer(customerId);
         response.then().log().all();
 
         softAssert.assertEquals(response.getStatusCode(), 200);

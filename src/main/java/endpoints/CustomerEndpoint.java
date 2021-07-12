@@ -5,7 +5,7 @@ import utils.CommonUtils;
 
 import java.io.IOException;
 
-public class UserEndpoint extends BaseEndpoint {
+public class CustomerEndpoint extends BaseEndpoint {
 
     public Response getCustomer(String id) throws IOException {
 
@@ -14,7 +14,7 @@ public class UserEndpoint extends BaseEndpoint {
 
         Response response = requestSpecification.given().when().get(endpointPath);
         return response;
-        
+
     }
 
 }
