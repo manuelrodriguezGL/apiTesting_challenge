@@ -44,9 +44,11 @@ public class CustomerTest extends TestBase {
     }
 
     @Test(description = "Post a new customer to database",
-            groups = {"Excluded"}, dataProvider = "Customer", dataProviderClass = CustomerDataProvider.class)
+            groups = {"Excluded"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
     public static void postCustomer(String email, String first_name, String last_name, String username,
                                     String password) {
+        //TODO change the data provider. Leave the existing one, but rename to CustomerExcel
+        // Create another one, CustomerArray, and use Faker library
         String requestPath = baseUrl + PATH;
         requestSpecification.formParams(fillCustomerData("", email, first_name, last_name, username, password));
 
@@ -124,6 +126,7 @@ public class CustomerTest extends TestBase {
                                                  String postcode, String country, String email, String phone)
             throws JsonProcessingException {
 
+        //TODO create an override of toString method on Billing address endpoint
         BillingAddress billingAddress = new BillingAddress(first_name, last_name, company, address_1, address_2,
                 city, state, postcode, country, email, phone);
         ObjectMapper objectMapper = new ObjectMapper();

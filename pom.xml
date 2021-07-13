@@ -69,6 +69,12 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>4.1.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -104,23 +110,23 @@
                             <value>5</value>
                         </property>
                     </properties>
-<!--                    <systemPropertyVariables>-->
-<!--                        <propertyName>-->
-<!--                            ${browser}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${headlessMode}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${baseUrl}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${sauce_user}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${sauce_psw}-->
-<!--                        </propertyName>-->
-<!--                    </systemPropertyVariables>-->
+                    <!--                    <systemPropertyVariables>-->
+                    <!--                        <propertyName>-->
+                    <!--                            ${browser}-->
+                    <!--                        </propertyName>-->
+                    <!--                        <propertyName>-->
+                    <!--                            ${headlessMode}-->
+                    <!--                        </propertyName>-->
+                    <!--                        <propertyName>-->
+                    <!--                            ${baseUrl}-->
+                    <!--                        </propertyName>-->
+                    <!--                        <propertyName>-->
+                    <!--                            ${sauce_user}-->
+                    <!--                        </propertyName>-->
+                    <!--                        <propertyName>-->
+                    <!--                            ${sauce_psw}-->
+                    <!--                        </propertyName>-->
+                    <!--                    </systemPropertyVariables>-->
                 </configuration>
             </plugin>
 
