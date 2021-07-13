@@ -24,12 +24,7 @@ public class CustomerTest extends TestBase {
     private static final String CONTEXT = "view";
     private static CustomerEndpoint customerEndpoint;
 
-    @BeforeMethod(alwaysRun = true)
-    public void testSetup(){
-        customerEndpoint = new CustomerEndpoint();
-    }
-
-    @Test(description = "Get Customers by ID", groups = {"Customers"})
+    @Test(description = "Get Customers by ID", groups = {"Excluded"})
     @Parameters({"customerId"})
     public static void getCustomers(String customerId) throws IOException {
         SoftAssert softAssert = new SoftAssert();
@@ -44,23 +39,16 @@ public class CustomerTest extends TestBase {
     }
 
     @Test(description = "Post a new customer to database",
-            groups = {"Excluded"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
+            groups = {"Customers"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
     public static void postCustomer(String email, String first_name, String last_name, String username,
                                     String password) {
-        //TODO change the data provider. Leave the existing one, but rename to CustomerExcel
-        // Create another one, CustomerArray, and use Faker library
-        String requestPath = baseUrl + PATH;
-        requestSpecification.formParams(fillCustomerData("", email, first_name, last_name, username, password));
 
-        Response response = requestSpecification.given()
-                .contentType(ContentType.URLENC)
-                .when()
-                .post(requestPath);
+        Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password);
         response.then().log().all();
 
         Assert.assertEquals(response.statusCode(), 201,
                 String.format("%s %s %s",
-                        GLOBAL_TEST_FAILED_MESSAGE, "Could not find customer with username :", username));
+                        GLOBAL_TEST_FAILED_MESSAGE, "Could not create customer with username :", username));
     }
 
     @Test(description = "Puts a new billing address into existing customer",
@@ -131,6 +119,11 @@ public class CustomerTest extends TestBase {
                 city, state, postcode, country, email, phone);
         ObjectMapper objectMapper = new ObjectMapper();
         return "{ \"billing\" : " + objectMapper.writeValueAsString(billingAddress) + "}";
+    }
+
+    @BeforeMethod(alwaysRun = true)
+    public void testSetup() {
+        customerEndpoint = new CustomerEndpoint();
     }
 }
 

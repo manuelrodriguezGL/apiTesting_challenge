@@ -1,10 +1,13 @@
 package utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -92,6 +95,16 @@ public class CommonUtils {
         } finally {
             inputStream.close();
         }
+    }
+
+    /**
+     * Converts an object into a Map of fields
+     * @param object Object class, must be defined as a POJO
+     * @return A Map representation of that object fields
+     */
+    public static Map objectToMap(Object object) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(object, Map.class);
     }
 
 }

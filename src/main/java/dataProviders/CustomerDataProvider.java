@@ -39,9 +39,7 @@ public class CustomerDataProvider {
         int fakeAmount = Integer.parseInt(CommonUtils.getPropertyValue("customerFakeAmount"));
         Object[][] result = new Object[fakeAmount][];
         for (int row = 0; row < fakeAmount; row++) {
-            for (int column = 0; column < 5; column++) {
-                result[row][column] = FakeDataGenerator.fakeCustomerData();
-            }
+            result[row] = FakeDataGenerator.fakeCustomerData();
         }
         return result;
     }
