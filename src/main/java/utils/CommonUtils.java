@@ -1,5 +1,6 @@
 package utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.FileNotFoundException;
@@ -99,12 +100,26 @@ public class CommonUtils {
 
     /**
      * Converts an object into a Map of fields
+     *
      * @param object Object class, must be defined as a POJO
      * @return A Map representation of that object fields
      */
     public static Map objectToMap(Object object) {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.convertValue(object, Map.class);
+    }
+
+    /**
+     * Gets a String representation of a JSON object, plus any additional characters or formatting needed
+     *
+     * @param object       Object class, must be defined as a POJO
+     * @param formatString A formatted string, with interpolation and/or additional characters
+     * @return A string representation of that object as a JSON, plus additional characters or format
+     * @throws JsonProcessingException
+     */
+    public static String objectToJsonString(Object object, String formatString) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return String.format(formatString, objectMapper.writeValueAsString(object));
     }
 
 }
