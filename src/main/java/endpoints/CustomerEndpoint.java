@@ -11,10 +11,20 @@ import utils.CommonUtils;
 
 public class CustomerEndpoint extends BaseEndpoint {
 
-    public Response getCustomer(String customerId) {
+    public Response getCustomerByID(String customerId) {
 
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
+
+        Response response = requestSpecification.given().when().get(endpointPath);
+        return response;
+
+    }
+
+    public Response getCustomerByQuantity(int quantity, String userRole) {
+
+        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
+        requestSpecification.queryParams("per_page", quantity, "role", userRole);
 
         Response response = requestSpecification.given().when().get(endpointPath);
         return response;
@@ -55,8 +65,8 @@ public class CustomerEndpoint extends BaseEndpoint {
     }
 
     public Response patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
-                                                String address_1, String address_2, String city, String postcode,
-                                                String country, String state)
+                                                 String address_1, String address_2, String city, String postcode,
+                                                 String country, String state)
             throws JsonProcessingException {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);

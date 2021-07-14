@@ -1,2 +1,4 @@
 <!--<parameter name="path" value="/customers"/>-->
 <parameter name="customerId" value="145"/>
+<parameter name="quantity" value="1"/>
+<parameter name="userRole" value="customer"/>

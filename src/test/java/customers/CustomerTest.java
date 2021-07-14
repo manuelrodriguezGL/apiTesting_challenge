@@ -3,6 +3,7 @@ package customers;
 import dataProviders.CustomerDataProvider;
 import endpoints.CustomerEndpoint;
 import io.restassured.response.Response;
+import org.hamcrest.collection.IsCollectionWithSize;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
@@ -14,13 +15,13 @@ public class CustomerTest extends TestBase {
 
     private static CustomerEndpoint customerEndpoint;
 
-    @Test(description = "Get Customers by ID", groups = {"Excluded"})
+    @Test(description = "Get Customers by ID", groups = {"Customers"})
     @Parameters({"customerId"})
-    public static void getCustomers(String customerId) {
+    public static void getCustomersByID(String customerId) {
         try {
             SoftAssert softAssert = new SoftAssert();
 
-            Response response = customerEndpoint.getCustomer(customerId);
+            Response response = customerEndpoint.getCustomerByID(customerId);
             response.then().log().all();
 
             softAssert.assertEquals(response.getStatusCode(), 200);
@@ -32,8 +33,30 @@ public class CustomerTest extends TestBase {
         }
     }
 
+    @Test(description = "Get Customers by quantity", groups = {"debug"})
+    @Parameters({"quantity", "userRole"})
+    public static void getCustomersByQuantity(String quantity, String userRole) {
+        try {
+            SoftAssert softAssert = new SoftAssert();
+
+            Response response = customerEndpoint.getCustomerByQuantity(Integer.parseInt(quantity), userRole);
+            response.then().log().all();
+            response.then().assertThat().body("id", IsCollectionWithSize.hasSize(1));
+            System.out.println("Size: " + response.body().jsonPath().getList("id").size());
+
+            softAssert.assertEquals(response.body().jsonPath().getList("id").size(), Integer.parseInt(quantity),
+                    String.format("%s %s %s",
+                            GLOBAL_TEST_FAILED_MESSAGE, "Quantity retrieved is different than requested :", quantity));
+            softAssert.assertEquals(response.getStatusCode(), 200);
+            softAssert.assertAll(String.format("%s %s %s",
+                    GLOBAL_TEST_FAILED_MESSAGE, "Could not find customers! Quantity requested :", quantity));
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
     @Test(description = "Post a new customer to database",
-            groups = {"Excluded"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
+            groups = {"Customers"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
     public static void postCustomer(String email, String first_name, String last_name, String username,
                                     String password) {
 
@@ -51,7 +74,7 @@ public class CustomerTest extends TestBase {
     }
 
     @Test(description = "Puts a new billing address into existing customer",
-            groups = "Excluded", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
+            groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public static void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                                  String address_1, String address_2, String city, String state,
                                                  String postcode, String country, String email, String phone) {
@@ -90,7 +113,8 @@ public class CustomerTest extends TestBase {
         }
     }
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeMethod(alwaysRun = true,
+            description = "Setup the customer endpoint to make the requests")
     public void testSetup() {
         customerEndpoint = new CustomerEndpoint();
     }
