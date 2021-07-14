@@ -51,7 +51,7 @@ public class CustomerTest extends TestBase {
     }
 
     @Test(description = "Puts a new billing address into existing customer",
-            groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
+            groups = "Excluded", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public static void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                                  String address_1, String address_2, String city, String state,
                                                  String postcode, String country, String email, String phone) {
@@ -65,6 +65,26 @@ public class CustomerTest extends TestBase {
             Assert.assertEquals(response.statusCode(), 200,
                     String.format("%s %s %s",
                             GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test(description = "Patches an existing customer with a new shipping address",
+            groups = "Customers", dataProvider = "ShippingAddress", dataProviderClass = CustomerDataProvider.class)
+    public static void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
+                                                    String address_1, String address_2, String city, String state,
+                                                    String postcode, String country) {
+
+        try {
+
+            Response response = customerEndpoint.patchCustomerShippingAddress(customerId, first_name, last_name, company,
+                    address_1, address_2, city, postcode, country, state);
+            response.then().log().all();
+
+            Assert.assertEquals(response.statusCode(), 200,
+                    String.format("%s %s %s",
+                            GLOBAL_TEST_FAILED_MESSAGE, "Could not PATCH shipping address for customer ID :", customerId));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
