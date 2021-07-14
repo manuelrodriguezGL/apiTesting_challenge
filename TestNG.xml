@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd"[
+        <!ENTITY classes SYSTEM "testConfiguration/Classes.xml">
+        <!ENTITY excludedTests SYSTEM "testConfiguration/ExcludedTests.xml">
+        <!ENTITY debugTests SYSTEM "testGroups/DebugTests.xml">
         <!ENTITY baseParameters SYSTEM "testConfiguration/BaseParameters.xml">
         <!ENTITY customerParameters SYSTEM "testConfiguration/CustomerParameters.xml">
+        <!ENTITY testGroups SYSTEM "testGroups/testGroups.xml">
         ]>
 
 <!--NOTE: There's a known TestNG bug. Add this param to the JVM [-Dtestng.dtd.http=true]-->
@@ -13,13 +17,11 @@
     <test name="API Tests">
         <groups>
             <run>
-                <include name="Customers"/>
-                <!--Add your EXCLUDED groups here-->
-                <exclude name="excluded"/>
+                &debugTests;
+                &excludedTests;
+<!--                &testGroups;-->
             </run>
         </groups>
-        <classes>
-            <class name="customers.CustomerTest"/>
-        </classes>
+        &classes;
     </test>
 </suite>
