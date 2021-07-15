@@ -3,7 +3,6 @@ package customers;
 import dataProviders.CustomerDataProvider;
 import endpoints.CustomerEndpoint;
 import io.restassured.response.Response;
-import org.hamcrest.collection.IsCollectionWithSize;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
@@ -13,9 +12,10 @@ import testBase.TestBase;
 
 public class CustomerTest extends TestBase {
 
+    private static final String ORDER = "desc";
     private static CustomerEndpoint customerEndpoint;
 
-    @Test(description = "Get Customers by ID", groups = {"Customers"})
+    @Test(description = "Get Customers by ID", groups = {"excluded"})
     @Parameters({"customerId"})
     public static void getCustomersByID(String customerId) {
         try {
@@ -33,7 +33,7 @@ public class CustomerTest extends TestBase {
         }
     }
 
-    @Test(description = "Get Customers by quantity", groups = {"debug"})
+    @Test(description = "Get Customers by quantity", groups = {"Customers"})
     @Parameters({"quantity", "userRole"})
     public static void getCustomersByQuantity(String quantity, String userRole) {
         try {
@@ -41,8 +41,6 @@ public class CustomerTest extends TestBase {
 
             Response response = customerEndpoint.getCustomerByQuantity(Integer.parseInt(quantity), userRole);
             response.then().log().all();
-            response.then().assertThat().body("id", IsCollectionWithSize.hasSize(1));
-            System.out.println("Size: " + response.body().jsonPath().getList("id").size());
 
             softAssert.assertEquals(response.body().jsonPath().getList("id").size(), Integer.parseInt(quantity),
                     String.format("%s %s %s",
@@ -108,6 +106,41 @@ public class CustomerTest extends TestBase {
             Assert.assertEquals(response.statusCode(), 200,
                     String.format("%s %s %s",
                             GLOBAL_TEST_FAILED_MESSAGE, "Could not PATCH shipping address for customer ID :", customerId));
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    /**
+     * This test searches for the last customer added. If none, then fails with an exception.
+     * Notice the hardcoded value for order parameter. This is in purpose, so we get the last item always
+     * and avoid mistakes
+     * At the end, the test validates if the user was indeed deleted, by getting that user ID and checking for a
+     * 404 response
+     *
+     * @param order    Order of the sorted customer list. Default to Descending
+     * @param orderBy  Criteria to order the lust of customers
+     * @param userRole Required user role of customers
+     */
+    @Test(description = "Deletes the last added customer",
+            groups = "Customers")
+    @Parameters({"order", "orderBy", "userRole"})
+    public static void deleteLastCustomer(String order, String orderBy, String userRole) {
+        try {
+            SoftAssert softAssert = new SoftAssert();
+
+            String customerId = customerEndpoint.getLastCustomerID(ORDER, orderBy, userRole);
+
+            Response response = customerEndpoint.deleteCustomerByID(customerId);
+            response.then().log().all();
+
+            Response deletedResponse = customerEndpoint.getCustomerByID(customerId);
+
+            softAssert.assertEquals(response.getStatusCode(), 200);
+            softAssert.assertEquals(deletedResponse.getStatusCode(), 404,
+                    String.format("%s %s %s",
+                            GLOBAL_TEST_FAILED_MESSAGE, "Could not delete customer with ID :", customerId));
+            softAssert.assertAll();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

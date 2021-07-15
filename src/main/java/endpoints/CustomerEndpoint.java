@@ -9,6 +9,9 @@ import payload.Customer;
 import payload.ShippingAddress;
 import utils.CommonUtils;
 
+import java.util.List;
+
+//TODO Document
 public class CustomerEndpoint extends BaseEndpoint {
 
     public Response getCustomerByID(String customerId) {
@@ -29,6 +32,14 @@ public class CustomerEndpoint extends BaseEndpoint {
         Response response = requestSpecification.given().when().get(endpointPath);
         return response;
 
+    }
+
+    public Response getCustomersSorted(String order, String orderBy, String userRole) {
+        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
+        requestSpecification.queryParams("order", order, "orderby", orderBy, "role", userRole);
+
+        Response response = requestSpecification.given().when().get(endpointPath);
+        return response;
     }
 
     @SuppressWarnings("unchecked")
@@ -80,5 +91,26 @@ public class CustomerEndpoint extends BaseEndpoint {
                 .patch(endpointPath);
 
         return response;
+    }
+
+    public Response deleteCustomerByID(String customerId) {
+        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
+        requestSpecification.pathParams("id", customerId);
+
+        // We force the deletion of the resource, as required by the API
+        requestSpecification.queryParams("force", Boolean.TRUE.toString());
+
+        Response response = requestSpecification.given().when().delete(endpointPath);
+        return response;
+    }
+
+    public List<Customer> getCustomerList(String order, String orderBy, String userRole) {
+        return getCustomersSorted(order, orderBy, userRole).jsonPath().getList("", Customer.class);
+    }
+
+    public String getLastCustomerID(String order, String orderBy, String userRole) {
+        List<Customer> customers = getCustomerList("desc", orderBy, userRole);
+        //int size = customers.size();
+        return customers.get(0).getId();
     }
 }

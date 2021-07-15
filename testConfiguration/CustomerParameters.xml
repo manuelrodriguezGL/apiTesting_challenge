@@ -2,3 +2,5 @@
 <parameter name="customerId" value="145"/>
 <parameter name="quantity" value="1"/>
 <parameter name="userRole" value="customer"/>
+<parameter name="order" value="desc"/>
+<parameter name="orderBy" value="id"/>
