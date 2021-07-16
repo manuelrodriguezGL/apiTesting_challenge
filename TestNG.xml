@@ -5,6 +5,7 @@
         <!ENTITY debugTests SYSTEM "testGroups/DebugTests.xml">
         <!ENTITY baseParameters SYSTEM "testConfiguration/BaseParameters.xml">
         <!ENTITY customerParameters SYSTEM "testConfiguration/CustomerParameters.xml">
+        <!ENTITY productParameters SYSTEM "testConfiguration/ProductsParameters.xml">
         <!ENTITY testGroups SYSTEM "testGroups/testGroups.xml">
         ]>
 
@@ -14,12 +15,13 @@
 <suite name="Regression">
     &baseParameters;
     &customerParameters;
+    &productParameters;
     <test name="API Tests">
         <groups>
             <run>
-<!--                &debugTests;-->
+                &debugTests;
                 &excludedTests;
-                &testGroups;
+                <!--                &testGroups;-->
             </run>
         </groups>
         &classes;

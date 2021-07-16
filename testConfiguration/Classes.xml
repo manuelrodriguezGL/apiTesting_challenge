@@ -1,3 +1,4 @@
 <classes>
     <class name="customers.CustomerTest"/>
+    <class name="products.ProductTest"/>
 </classes>
