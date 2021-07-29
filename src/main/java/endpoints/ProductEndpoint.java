@@ -1,8 +1,10 @@
 package endpoints;
 
 import constants.EndpointRoutes;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import payload.Product;
+import utils.CommonUtils;
 
 import java.util.List;
 
@@ -31,6 +33,20 @@ public class ProductEndpoint extends BaseEndpoint {
         requestSpecification.queryParams("order", order, "orderby", orderBy);
 
         Response response = requestSpecification.given().when().get(endpointPath);
+        return response;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Response postProduct(String name, String slug, String description) {
+        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
+        requestSpecification.formParams(CommonUtils.objectToMap(
+                new Product("", name, slug, description)));
+
+        Response response = requestSpecification.given()
+                .contentType(ContentType.URLENC)
+                .when()
+                .post(endpointPath);
+
         return response;
     }
 

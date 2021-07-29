@@ -1,13 +1,15 @@
 package products;
 
+import dataProviders.ProductDataProvider;
 import endpoints.ProductEndpoint;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import testBase.TestBase;
+
+import static org.hamcrest.Matchers.hasSize;
 
 public class ProductTest extends TestBase {
 
@@ -17,17 +19,34 @@ public class ProductTest extends TestBase {
     @Parameters({"product_quantity"})
     public static void getProductsByQuantity(String quantity) {
         try {
-            SoftAssert softAssert = new SoftAssert();
+            // SoftAssert softAssert = new SoftAssert();
             Response response = productEndpoint.getProductByQuantity(Integer.parseInt(quantity));
-            response.then().log().all();
+            response.then()
+                    .assertThat().body("id", hasSize(Integer.parseInt(quantity)))
+                    .and()
+                    .statusCode(200)
+                    .log().all();
 
-            softAssert.assertEquals(response.body().jsonPath().getList("id").size(), Integer.parseInt(quantity),
-                    String.format("%s %s %s",
-                            GLOBAL_TEST_FAILED_MESSAGE, "Quantity retrieved is different than requested :", quantity));
-            softAssert.assertEquals(response.getStatusCode(), 200);
-            softAssert.assertAll(String.format("%s %s %s",
-                    GLOBAL_TEST_FAILED_MESSAGE, "Could not find products! Quantity requested :", quantity));
+//            softAssert.assertEquals(response.body().jsonPath().getList("id").size(), Integer.parseInt(quantity),
+//                    String.format("%s %s %s",
+//                            GLOBAL_TEST_FAILED_MESSAGE, "Quantity retrieved is different than requested :", quantity));
+//            softAssert.assertEquals(response.getStatusCode(), 200);
+//            softAssert.assertAll(String.format("%s %s %s",
+//                    GLOBAL_TEST_FAILED_MESSAGE, "Could not find products! Quantity requested :", quantity));
 
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test(description = "Post a new product to database",
+            groups = {"debug"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class)
+    public static void postCustomer(String name, String slug, String description) {
+        try {
+            Response response = productEndpoint.postProduct(name, slug, description);
+            response.then()
+                    .assertThat().statusCode(201)
+                    .log().all();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
