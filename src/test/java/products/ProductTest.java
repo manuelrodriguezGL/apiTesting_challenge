@@ -40,12 +40,25 @@ public class ProductTest extends TestBase {
     }
 
     @Test(description = "Post a new product to database",
-            groups = {"debug"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class)
-    public static void postCustomer(String name, String slug, String description) {
+            groups = {"Products"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class)
+    public static void postProduct(String name, String slug, String description) {
         try {
             Response response = productEndpoint.postProduct(name, slug, description);
             response.then()
                     .assertThat().statusCode(201)
+                    .log().all();
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test(description = "Puts a new description into existing product",
+            groups = "debug", dataProvider = "ProductDescription", dataProviderClass = ProductDataProvider.class)
+    public static void putProductDescription(String productId, String name, String slug, String description) {
+        try {
+            Response response = productEndpoint.putProductDescription(productId, name, slug, description);
+            response.then()
+                    .assertThat().statusCode(200)
                     .log().all();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
