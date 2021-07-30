@@ -80,6 +80,17 @@ public class ProductEndpoint extends BaseEndpoint {
         return response;
     }
 
+    public Response deleteProductById(String productId) {
+        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
+        requestSpecification.pathParams("id", productId);
+
+        // We force the deletion of the resource, as required by the API
+        requestSpecification.queryParams("force", Boolean.TRUE.toString());
+
+        Response response = requestSpecification.given().when().delete(endpointPath);
+        return response;
+    }
+
     public List<Product> getProductList(String order, String orderBy) {
         return getProductsSorted(order, orderBy).jsonPath().getList("", Product.class);
     }

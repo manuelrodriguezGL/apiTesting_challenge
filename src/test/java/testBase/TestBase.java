@@ -10,6 +10,7 @@ import org.testng.annotations.Parameters;
 @Listeners(TestExecutionListener.class)
 public class TestBase {
 
+    protected static final String ORDER = "desc";
     protected static final String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
     protected static RequestSpecification requestSpecification;
 

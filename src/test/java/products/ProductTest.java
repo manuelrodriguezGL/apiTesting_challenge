@@ -78,6 +78,26 @@ public class ProductTest extends TestBase {
         }
     }
 
+    @Test(description = "Deletes the last added product",
+            groups = "debug")
+    @Parameters({"order", "orderBy"})
+    public static void deleteLastProduct(String order, String orderBy) {
+        try {
+            String lastProductId = productEndpoint.getLastProductID(ORDER, orderBy);
+
+            Response response = productEndpoint.deleteProductById(lastProductId);
+            response.then()
+                    .assertThat().statusCode(200)
+                    .log().all();
+
+            Response deletedResponse = productEndpoint.getProductById(lastProductId);
+            deletedResponse.then()
+                    .assertThat().statusCode(404);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
 
     @BeforeMethod(alwaysRun = true,
             description = "Setup the product endpoint to make the requests")

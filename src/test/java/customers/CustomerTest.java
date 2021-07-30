@@ -12,7 +12,6 @@ import testBase.TestBase;
 
 public class CustomerTest extends TestBase {
 
-    private static final String ORDER = "desc";
     private static CustomerEndpoint customerEndpoint;
 
     @Test(description = "Get Customers by ID", groups = {"excluded"})
@@ -123,7 +122,7 @@ public class CustomerTest extends TestBase {
      * @param userRole Required user role of customers
      */
     @Test(description = "Deletes the last added customer",
-            groups = "Customers")
+            groups = "debug")
     @Parameters({"order", "orderBy", "userRole"})
     public static void deleteLastCustomer(String order, String orderBy, String userRole) {
         try {
