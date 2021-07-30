@@ -29,4 +29,14 @@ public class ProductDataProvider {
         return ExcelFileReader.readFile(propertiesArray.get(0), propertiesArray.get(1));
     }
 
+    @DataProvider(name = "ProductName")
+    private Object[][] productNameFaker() throws IOException, IndexOutOfBoundsException {
+        int fakeAmount = Integer.parseInt(CommonUtils.getPropertyValue("productFakeAmount"));
+        Object[][] result = new Object[fakeAmount][];
+        for (int row = 0; row < fakeAmount; row++) {
+            result[row] = FakeDataGenerator.fakeProductName();
+        }
+        return result;
+    }
+
 }

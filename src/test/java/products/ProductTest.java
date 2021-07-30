@@ -53,7 +53,7 @@ public class ProductTest extends TestBase {
     }
 
     @Test(description = "Puts a new description into existing product",
-            groups = "debug", dataProvider = "ProductDescription", dataProviderClass = ProductDataProvider.class)
+            groups = "Products", dataProvider = "ProductDescription", dataProviderClass = ProductDataProvider.class)
     public static void putProductDescription(String productId, String name, String slug, String description) {
         try {
             Response response = productEndpoint.putProductDescription(productId, name, slug, description);
@@ -64,6 +64,20 @@ public class ProductTest extends TestBase {
             Assert.fail(e.getMessage());
         }
     }
+
+    @Test(description = "Patches an existing product with a new name",
+            groups = "Products", dataProvider = "ProductName", dataProviderClass = ProductDataProvider.class)
+    public static void patchProductName(String productId, String productName) {
+        try {
+            Response response = productEndpoint.patchProductName(productId, productName);
+            response.then()
+                    .assertThat().statusCode(200)
+                    .log().all();
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
 
     @BeforeMethod(alwaysRun = true,
             description = "Setup the product endpoint to make the requests")

@@ -66,7 +66,26 @@ public class ProductEndpoint extends BaseEndpoint {
         return response;
     }
 
+    public Response patchProductName(String productId, String name) throws JsonProcessingException {
+        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
+        requestSpecification.pathParams("id", productId);
+        requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, "", ""),
+                "%s"));
+
+        Response response = requestSpecification.given()
+                .contentType(ContentType.JSON)
+                .when()
+                .patch(endpointPath);
+
+        return response;
+    }
+
     public List<Product> getProductList(String order, String orderBy) {
         return getProductsSorted(order, orderBy).jsonPath().getList("", Product.class);
+    }
+
+    public String getLastProductID(String order, String orderBy) {
+        List<Product> customers = getProductList("desc", orderBy);
+        return customers.get(0).getId();
     }
 }

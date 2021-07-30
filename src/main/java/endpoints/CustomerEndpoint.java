@@ -110,7 +110,6 @@ public class CustomerEndpoint extends BaseEndpoint {
 
     public String getLastCustomerID(String order, String orderBy, String userRole) {
         List<Customer> customers = getCustomerList("desc", orderBy, userRole);
-        //int size = customers.size();
         return customers.get(0).getId();
     }
 }

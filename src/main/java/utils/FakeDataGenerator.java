@@ -23,4 +23,11 @@ public class FakeDataGenerator {
                 faker.lorem().sentence(100)
         };
     }
+
+    public static String[] fakeProductName() {
+        return new String[]{
+                faker.random().nextInt(11, 21).toString(),
+                faker.commerce().productName()
+        };
+    }
 }
