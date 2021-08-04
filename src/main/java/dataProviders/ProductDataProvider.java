@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * In general terms, this class produces fake random product data, using Faker library
+ */
 public class ProductDataProvider {
     @DataProvider(name = "ProductFaker")
     private Object[][] productDataFaker() throws IOException, IndexOutOfBoundsException {

@@ -34,6 +34,13 @@ public class CustomerDataProvider {
         return ExcelFileReader.readFile(propertiesArray.get(0), propertiesArray.get(1));
     }
 
+    /**
+     * This data provider makes use of Faker library, to generate random data
+     *
+     * @return A multi dimensional array with fake random customer data
+     * @throws IOException
+     * @throws IndexOutOfBoundsException
+     */
     @DataProvider(name = "CustomerFaker")
     private Object[][] customerDataFaker() throws IOException, IndexOutOfBoundsException {
         int fakeAmount = Integer.parseInt(CommonUtils.getPropertyValue("customerFakeAmount"));

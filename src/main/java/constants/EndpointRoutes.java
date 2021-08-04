@@ -1,7 +1,9 @@
 package constants;
 
+/**
+ * THis class represents the paths for each endpoint
+ */
 public class EndpointRoutes {
-    public static final String BASE_URL = "http://52.14.147.231/wp-json/wc/v2";
     public static final String CUSTOMER_PATH = "/customers";
     public static final String PRODUCT_PATH = "/products";
 }
