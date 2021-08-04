@@ -118,11 +118,11 @@ public class CustomerTest extends TestBase {
      * 404 response
      *
      * @param order    Order of the sorted customer list. Default to Descending
-     * @param orderBy  Criteria to order the lust of customers
+     * @param orderBy  Criteria to order the list of customers
      * @param userRole Required user role of customers
      */
     @Test(description = "Deletes the last added customer",
-            groups = "debug")
+            groups = "Customers")
     @Parameters({"order", "orderBy", "userRole"})
     public static void deleteLastCustomer(String order, String orderBy, String userRole) {
         try {
@@ -148,7 +148,7 @@ public class CustomerTest extends TestBase {
     @BeforeMethod(alwaysRun = true,
             description = "Setup the customer endpoint to make the requests")
     public void testSetup() {
-        customerEndpoint = new CustomerEndpoint();
+        customerEndpoint = new CustomerEndpoint(baseUrl);
     }
 }
 

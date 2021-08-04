@@ -1,6 +1,5 @@
 package endpoints;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import constants.EndpointRoutes;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -14,7 +13,11 @@ import java.util.List;
 //TODO Document
 public class CustomerEndpoint extends BaseEndpoint {
 
-    public Response getCustomerByID(String customerId) {
+    public CustomerEndpoint(String baseUrl) {
+        super(baseUrl);
+    }
+
+    public Response getCustomerByID(String customerId) throws Exception {
 
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
@@ -24,7 +27,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
     }
 
-    public Response getCustomerByQuantity(int quantity, String userRole) {
+    public Response getCustomerByQuantity(int quantity, String userRole) throws Exception {
 
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("per_page", quantity, "role", userRole);
@@ -34,7 +37,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
     }
 
-    public Response getCustomersSorted(String order, String orderBy, String userRole) {
+    public Response getCustomersSorted(String order, String orderBy, String userRole) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("order", order, "orderby", orderBy, "role", userRole);
 
@@ -44,7 +47,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
     @SuppressWarnings("unchecked")
     public Response postCustomer(String email, String first_name, String last_name, String username,
-                                 String password) {
+                                 String password) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
         requestSpecification.formParams(CommonUtils.objectToMap(
                 new Customer("", email, first_name, last_name, username, password)));
@@ -60,7 +63,7 @@ public class CustomerEndpoint extends BaseEndpoint {
     public Response putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                               String address_1, String address_2, String city, String state,
                                               String postcode, String country, String email, String phone)
-            throws JsonProcessingException {
+            throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
         requestSpecification.body(CommonUtils.objectToJsonString(new BillingAddress(first_name, last_name, company,
@@ -78,7 +81,7 @@ public class CustomerEndpoint extends BaseEndpoint {
     public Response patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
                                                  String address_1, String address_2, String city, String postcode,
                                                  String country, String state)
-            throws JsonProcessingException {
+            throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
         requestSpecification.body(CommonUtils.objectToJsonString(new ShippingAddress(first_name, last_name, company,
@@ -93,7 +96,7 @@ public class CustomerEndpoint extends BaseEndpoint {
         return response;
     }
 
-    public Response deleteCustomerByID(String customerId) {
+    public Response deleteCustomerByID(String customerId) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
 
@@ -104,11 +107,11 @@ public class CustomerEndpoint extends BaseEndpoint {
         return response;
     }
 
-    public List<Customer> getCustomerList(String order, String orderBy, String userRole) {
+    public List<Customer> getCustomerList(String order, String orderBy, String userRole) throws Exception {
         return getCustomersSorted(order, orderBy, userRole).jsonPath().getList("", Customer.class);
     }
 
-    public String getLastCustomerID(String order, String orderBy, String userRole) {
+    public String getLastCustomerID(String order, String orderBy, String userRole) throws Exception {
         List<Customer> customers = getCustomerList("desc", orderBy, userRole);
         return customers.get(0).getId();
     }

@@ -1,6 +1,5 @@
 package endpoints;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import constants.EndpointRoutes;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -10,7 +9,12 @@ import utils.CommonUtils;
 import java.util.List;
 
 public class ProductEndpoint extends BaseEndpoint {
-    public Response getProductById(String productId) {
+
+    public ProductEndpoint(String baseUrl) {
+        super(baseUrl);
+    }
+
+    public Response getProductById(String productId) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
 
@@ -18,7 +22,7 @@ public class ProductEndpoint extends BaseEndpoint {
         return response;
     }
 
-    public Response getProductByQuantity(int quantity) {
+    public Response getProductByQuantity(int quantity) throws Exception {
 
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
         requestSpecification.queryParams("per_page", quantity);
@@ -29,7 +33,7 @@ public class ProductEndpoint extends BaseEndpoint {
 
     }
 
-    public Response getProductsSorted(String order, String orderBy) {
+    public Response getProductsSorted(String order, String orderBy) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
         requestSpecification.queryParams("order", order, "orderby", orderBy);
 
@@ -38,7 +42,7 @@ public class ProductEndpoint extends BaseEndpoint {
     }
 
     @SuppressWarnings("unchecked")
-    public Response postProduct(String name, String slug, String description) {
+    public Response postProduct(String name, String slug, String description) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
         requestSpecification.formParams(CommonUtils.objectToMap(
                 new Product("", name, slug, description)));
@@ -52,7 +56,7 @@ public class ProductEndpoint extends BaseEndpoint {
     }
 
     public Response putProductDescription(String productId, String name, String slug, String description)
-            throws JsonProcessingException {
+            throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
         requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, slug, description),
@@ -66,7 +70,7 @@ public class ProductEndpoint extends BaseEndpoint {
         return response;
     }
 
-    public Response patchProductName(String productId, String name) throws JsonProcessingException {
+    public Response patchProductName(String productId, String name) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
         requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, "", ""),
@@ -80,7 +84,7 @@ public class ProductEndpoint extends BaseEndpoint {
         return response;
     }
 
-    public Response deleteProductById(String productId) {
+    public Response deleteProductById(String productId) throws Exception {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
 
@@ -91,11 +95,11 @@ public class ProductEndpoint extends BaseEndpoint {
         return response;
     }
 
-    public List<Product> getProductList(String order, String orderBy) {
+    public List<Product> getProductList(String order, String orderBy) throws Exception {
         return getProductsSorted(order, orderBy).jsonPath().getList("", Product.class);
     }
 
-    public String getLastProductID(String order, String orderBy) {
+    public String getLastProductID(String order, String orderBy) throws Exception {
         List<Product> customers = getProductList("desc", orderBy);
         return customers.get(0).getId();
     }

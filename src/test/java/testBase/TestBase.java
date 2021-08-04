@@ -14,9 +14,12 @@ public class TestBase {
     protected static final String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
     protected static RequestSpecification requestSpecification;
 
+    protected static String baseUrl = "";
+
     @BeforeMethod(alwaysRun = true)
-    @Parameters({"validUser", "validPassword"})
-    public static void authenticate(String usr, String psw) {
+    @Parameters({"baseUrl", "api_user", "api_psw"})
+    public static void authenticate(String _baseUrl, String usr, String psw) {
+        baseUrl = _baseUrl;
         requestSpecification = BaseEndpoint.authenticate(usr, psw);
     }
 }

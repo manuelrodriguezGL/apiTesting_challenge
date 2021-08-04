@@ -78,8 +78,18 @@ public class ProductTest extends TestBase {
         }
     }
 
+    /**
+     * This test searches for the last product added. If none, then fails with an exception.
+     * Notice the hardcoded value for order parameter. This is in purpose, so we get the last item always
+     * and avoid mistakes
+     * At the end, the test validates if the product was indeed deleted, by getting that product ID and checking for a
+     * 404 response
+     *
+     * @param order   Order of the sorted product list. Default to Descending
+     * @param orderBy Criteria to order the list of products
+     */
     @Test(description = "Deletes the last added product",
-            groups = "debug")
+            groups = "Products")
     @Parameters({"order", "orderBy"})
     public static void deleteLastProduct(String order, String orderBy) {
         try {
@@ -102,6 +112,6 @@ public class ProductTest extends TestBase {
     @BeforeMethod(alwaysRun = true,
             description = "Setup the product endpoint to make the requests")
     public void testSetup() {
-        productEndpoint = new ProductEndpoint();
+        productEndpoint = new ProductEndpoint(baseUrl);
     }
 }

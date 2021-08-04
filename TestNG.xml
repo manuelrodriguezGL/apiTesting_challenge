@@ -21,7 +21,7 @@
             <run>
                 &debugTests;
                 &excludedTests;
-                <!--                &testGroups;-->
+                &testGroups;
             </run>
         </groups>
         &classes;
