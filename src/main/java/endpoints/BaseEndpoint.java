@@ -9,16 +9,8 @@ public class BaseEndpoint {
     static RequestSpecification requestSpecification;
     private static String base_url = "";
 
-    BaseEndpoint() {
-    }
-
     BaseEndpoint(String _base_url) {
         base_url = _base_url;
-    }
-
-    public BaseEndpoint(String psw, String usr) {
-        if (requestSpecification == null)
-            authenticate(usr, psw);
     }
 
     protected static String buildEndpointPath(String path) throws Exception {
@@ -31,9 +23,4 @@ public class BaseEndpoint {
         requestSpecification = given().auth().preemptive().basic(usr, psw);
         return requestSpecification;
     }
-
-    public void setBaseUrl(String _base_url) {
-        base_url = _base_url;
-    }
-
 }
