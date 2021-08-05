@@ -23,7 +23,7 @@ public class CustomerTest extends TestBase {
             Response response = customerEndpoint.getCustomerByID(customerId);
             response.then().log().all();
 
-            softAssert.assertEquals(response.getStatusCode(), 200);
+            softAssert.assertEquals(response.getStatusCode(), 201);
             softAssert.assertEquals(response.jsonPath().get("id").toString(), customerId);
             softAssert.assertAll(String.format("%s %s %s",
                     GLOBAL_TEST_FAILED_MESSAGE, "Could not find customer with ID :", customerId));
