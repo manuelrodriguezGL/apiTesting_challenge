@@ -19,7 +19,6 @@ public class ProductTest extends TestBase {
     @Parameters({"product_quantity"})
     public static void getProductsByQuantity(String quantity) {
         try {
-            // SoftAssert softAssert = new SoftAssert();
             Response response = productEndpoint.getProductByQuantity(Integer.parseInt(quantity));
             response.then()
                     .assertThat().body("id", hasSize(Integer.parseInt(quantity)))
@@ -27,12 +26,6 @@ public class ProductTest extends TestBase {
                     .statusCode(200)
                     .log().all();
 
-//            softAssert.assertEquals(response.body().jsonPath().getList("id").size(), Integer.parseInt(quantity),
-//                    String.format("%s %s %s",
-//                            GLOBAL_TEST_FAILED_MESSAGE, "Quantity retrieved is different than requested :", quantity));
-//            softAssert.assertEquals(response.getStatusCode(), 200);
-//            softAssert.assertAll(String.format("%s %s %s",
-//                    GLOBAL_TEST_FAILED_MESSAGE, "Could not find products! Quantity requested :", quantity));
 
         } catch (Exception e) {
             Assert.fail(e.getMessage());

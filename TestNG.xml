@@ -19,7 +19,7 @@
     <test name="API Tests">
         <groups>
             <run>
-                &debugTests;
+<!--                &debugTests;-->
                 &excludedTests;
                 &testGroups;
             </run>

@@ -5,6 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+/**
+ * This class exemplifies the use of an abstract parent, and how the JSON parser knows which son it belongs to
+ * We want to ignore on purpose some JSON properties that come from API response, that's why I added
+ * JsonIgnoreProperties annotation
+ */
+
 @JsonPropertyOrder({"first_name", "last_name", "company", "address_1", "address_2", "city", "postcode", "country", "state"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractAddress {

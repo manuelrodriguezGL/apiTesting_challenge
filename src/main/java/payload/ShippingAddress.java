@@ -5,7 +5,8 @@ public class ShippingAddress extends AbstractAddress {
     }
 
     /**
-     *
+     * Unlike Billing Address, this class does not have any additional field than those defined on the abstract class
+     * Still, I want to explicitly differentiate objects
      */
     public ShippingAddress(String first_name, String last_name, String company, String address_1, String address_2,
                            String city, String postcode, String country, String state) {
