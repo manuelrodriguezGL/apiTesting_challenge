@@ -25,6 +25,56 @@
             <artifactId>maven-surefire-report-plugin</artifactId>
             <version>3.0.0-M4</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.12.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.12.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -60,23 +110,17 @@
                             <value>5</value>
                         </property>
                     </properties>
-<!--                    <systemPropertyVariables>-->
-<!--                        <propertyName>-->
-<!--                            ${browser}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${headlessMode}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${baseUrl}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${sauce_user}-->
-<!--                        </propertyName>-->
-<!--                        <propertyName>-->
-<!--                            ${sauce_psw}-->
-<!--                        </propertyName>-->
-<!--                    </systemPropertyVariables>-->
+                    <systemPropertyVariables>
+                        <propertyName>
+                            ${baseUrl}
+                        </propertyName>
+                        <propertyName>
+                            ${api_user}
+                        </propertyName>
+                        <propertyName>
+                            ${api_psw}
+                        </propertyName>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 

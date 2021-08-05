@@ -1,0 +1,3 @@
+<!--Customer tests-->
+<include name="Customers"/>
+<include name="Products"/>

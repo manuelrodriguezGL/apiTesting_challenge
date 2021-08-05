@@ -1,0 +1,7 @@
+<!-- Login  Parameters-->
+<parameter name="validUser" value="auto"/>
+<parameter name="validPassword" value="auto"/>
+<!--<parameter name="viewContext" value="view"/>-->
+<!--Sorting parameters-->
+<parameter name="order" value="desc"/>
+<parameter name="orderBy" value="id"/>
