@@ -14,7 +14,7 @@ public class CustomerTest extends TestBase {
 
     private static CustomerEndpoint customerEndpoint;
 
-    @Test(description = "Get Customers by ID", groups = {"excluded"})
+    @Test(description = "Get Customers by ID", groups = {"Customers"})
     @Parameters({"customerId"})
     public static void getCustomersByID(String customerId) {
         try {
