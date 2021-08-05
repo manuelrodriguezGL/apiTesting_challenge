@@ -175,7 +175,7 @@ public class CustomerEndpoint extends BaseEndpoint {
     }
 
     /**
-     * Forces the deleteion of a customer by ID
+     * Forces the deletion of a customer by ID
      *
      * @param customerId Customer ID
      * @return An HTTP Response object with all customer data inside a JSON
@@ -211,7 +211,7 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @param order    Order of sort criteria: ascending or descending
      * @param orderBy  Order by criteria: Field to order the customers by
      * @param userRole The role of the user, as required by the API
-     * @return
+     * @return A String with last added customer ID
      * @throws Exception
      */
     public String getLastCustomerID(String order, String orderBy, String userRole) throws Exception {
