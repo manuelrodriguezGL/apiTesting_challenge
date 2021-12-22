@@ -4,9 +4,9 @@ import com.github.javafaker.Faker;
 
 public class FakeDataGenerator {
 
-    private static Faker faker = new Faker();
+    private Faker faker = new Faker();
 
-    public static String[] fakeCustomerData() {
+    public String[] fakeCustomerData() {
         return new String[]{
                 faker.internet().safeEmailAddress(),
                 faker.name().firstName(),
@@ -16,7 +16,7 @@ public class FakeDataGenerator {
         };
     }
 
-    public static String[] fakeProductData() {
+    public String[] fakeProductData() {
         return new String[]{
                 faker.commerce().productName(),
                 faker.code().asin(),
@@ -24,7 +24,7 @@ public class FakeDataGenerator {
         };
     }
 
-    public static String[] fakeProductName() {
+    public String[] fakeProductName() {
         return new String[]{
                 faker.random().nextInt(11, 21).toString(),
                 faker.commerce().productName()
