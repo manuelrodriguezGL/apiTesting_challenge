@@ -1,0 +1,29 @@
+API PROJECT
+
++++++++++++++++++++++++++
+Can be improved?
++++++++++++++++++++++++++
+- I think that you are using testng listeners but I think you are not using them, I did not see it in the testNG.xml file.
+// I'm using @Listeners(TestExecutionListener.class) annotation in TestBase
+
+- A lot of statics variables, for example:
+	private static CustomerEndpoint customerEndpoint;
+
+- In this case you can just return without defining a variable since it will be returned in the next line
+        Response response = requestSpecification.given()
+            .contentType(ContentType.JSON)
+            .when()
+            .put(endpointPath);
+        return response;
+
+- postCustomer and other tests is just checking status code, try to see if there are more criteria to validate.
+- product tests are checking just status code as well
+
++++++++++++++++++++++++++
+PROS
++++++++++++++++++++++++++
+- Softasserts
+- testng groups and dataproviders
+- Use of faker to generate data
+- I like the objects, how to build requests and objects.
+- I like authentication hook (before method).
