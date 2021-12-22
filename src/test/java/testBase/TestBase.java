@@ -10,11 +10,11 @@ import org.testng.annotations.Parameters;
 @Listeners(TestExecutionListener.class)
 public class TestBase {
 
-    protected static final String ORDER = "desc";
-    protected static final String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
+    protected final String ORDER = "desc";
+    protected final String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
     protected RequestSpecification requestSpecification;
 
-    protected static String baseUrl = "";
+    protected String baseUrl = "";
 
     @BeforeMethod(alwaysRun = true)
     @Parameters({"baseUrl", "api_user", "api_psw"})

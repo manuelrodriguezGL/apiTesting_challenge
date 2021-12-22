@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseEndpoint {
 
+    //TODO check for runtime errors related to requestSpecification
     protected RequestSpecification requestSpecification;
     protected EndpointRoutes endpointRoutes;
 

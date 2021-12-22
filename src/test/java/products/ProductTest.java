@@ -84,7 +84,7 @@ public class ProductTest extends TestBase {
     @Test(description = "Deletes the last added product",
             groups = "Products")
     @Parameters({"order", "orderBy"})
-    public static void deleteLastProduct(String order, String orderBy) {
+    public void deleteLastProduct(String order, String orderBy) {
         try {
             String lastProductId = productEndpoint.getLastProductID(ORDER, orderBy);
 
