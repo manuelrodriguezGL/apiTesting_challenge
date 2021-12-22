@@ -7,7 +7,7 @@ Can be improved?
 // I'm using @Listeners(TestExecutionListener.class) annotation in TestBase
 
 - A lot of statics variables, for example:
-	private static CustomerEndpoint customerEndpoint;
+	private static CustomerEndpoint customerEndpoint; DONE
 
 - In this case you can just return without defining a variable since it will be returned in the next line DONE
         Response response = requestSpecification.given()
