@@ -12,7 +12,7 @@ import testBase.TestBase;
 
 public class CustomerTest extends TestBase {
 
-    private static CustomerEndpoint customerEndpoint;
+    private CustomerEndpoint customerEndpoint;
 
     @Test(description = "Get Customers by ID", groups = {"Customers"})
     @Parameters({"customerId"})
