@@ -29,9 +29,7 @@ public class CustomerEndpoint extends BaseEndpoint {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
-
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -47,9 +45,7 @@ public class CustomerEndpoint extends BaseEndpoint {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("per_page", quantity, "role", userRole);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
-
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -65,8 +61,7 @@ public class CustomerEndpoint extends BaseEndpoint {
         String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("order", order, "orderby", orderBy, "role", userRole);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -90,12 +85,10 @@ public class CustomerEndpoint extends BaseEndpoint {
         requestSpecification.formParams(CommonUtils.objectToMap(
                 new Customer("", email, first_name, last_name, username, password)));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.URLENC)
                 .when()
                 .post(endpointPath);
-
-        return response;
     }
 
     /**
@@ -129,12 +122,10 @@ public class CustomerEndpoint extends BaseEndpoint {
                         address_1, address_2, city, state, postcode, country, email, phone),
                 "{ \"billing\" : %s}"));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.JSON)
                 .when()
                 .put(endpointPath);
-
-        return response;
     }
 
     /**
@@ -166,12 +157,10 @@ public class CustomerEndpoint extends BaseEndpoint {
                         address_1, address_2, city, postcode, country, state),
                 "{ \"shipping\" : %s}"));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.JSON)
                 .when()
                 .patch(endpointPath);
-
-        return response;
     }
 
     /**
@@ -188,8 +177,7 @@ public class CustomerEndpoint extends BaseEndpoint {
         // We force the deletion of the resource, as required by the API
         requestSpecification.queryParams("force", Boolean.TRUE.toString());
 
-        Response response = requestSpecification.given().when().delete(endpointPath);
-        return response;
+        return requestSpecification.given().when().delete(endpointPath);
     }
 
     /**
