@@ -25,8 +25,7 @@ public class ProductEndpoint extends BaseEndpoint {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -41,10 +40,7 @@ public class ProductEndpoint extends BaseEndpoint {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
         requestSpecification.queryParams("per_page", quantity);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-
-        return response;
-
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -59,8 +55,7 @@ public class ProductEndpoint extends BaseEndpoint {
         String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
         requestSpecification.queryParams("order", order, "orderby", orderBy);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -81,12 +76,10 @@ public class ProductEndpoint extends BaseEndpoint {
         requestSpecification.formParams(CommonUtils.objectToMap(
                 new Product("", name, slug, description)));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.URLENC)
                 .when()
                 .post(endpointPath);
-
-        return response;
     }
 
     /**
@@ -106,12 +99,10 @@ public class ProductEndpoint extends BaseEndpoint {
         requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, slug, description),
                 "%s"));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.JSON)
                 .when()
                 .put(endpointPath);
-
-        return response;
     }
 
     /**
@@ -128,12 +119,10 @@ public class ProductEndpoint extends BaseEndpoint {
         requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, "", ""),
                 "%s"));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.JSON)
                 .when()
                 .patch(endpointPath);
-
-        return response;
     }
 
     /**
@@ -150,8 +139,7 @@ public class ProductEndpoint extends BaseEndpoint {
         // We force the deletion of the resource, as required by the API
         requestSpecification.queryParams("force", Boolean.TRUE.toString());
 
-        Response response = requestSpecification.given().when().delete(endpointPath);
-        return response;
+        return requestSpecification.given().when().delete(endpointPath);
     }
 
     /**
