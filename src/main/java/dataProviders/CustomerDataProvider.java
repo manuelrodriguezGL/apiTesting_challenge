@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class CustomerDataProvider {
     @DataProvider(name = "CustomerExcel")
-    public static Object[][] customerData() throws IOException {
+    public Object[][] customerData() throws IOException {
         ArrayList<String> propertiesArray =
                 CommonUtils.getPropertiesArray(new ArrayList<>(Arrays.asList("customer_excel_path", "customer_excel_sheet")));
 
