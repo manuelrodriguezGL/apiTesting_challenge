@@ -3,7 +3,6 @@ package endpoints;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import payload.Product;
-import utils.CommonUtils;
 
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class ProductEndpoint extends BaseEndpoint {
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params
-        requestSpecification.formParams(CommonUtils.objectToMap(
+        requestSpecification.formParams(commonUtils.objectToMap(
                 new Product("", name, slug, description)));
 
         return requestSpecification.given()
@@ -95,7 +94,7 @@ public class ProductEndpoint extends BaseEndpoint {
             throws Exception {
         String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
-        requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, slug, description),
+        requestSpecification.body(commonUtils.objectToJsonString(new Product(productId, name, slug, description),
                 "%s"));
 
         return requestSpecification.given()
@@ -115,7 +114,7 @@ public class ProductEndpoint extends BaseEndpoint {
     public Response patchProductName(String productId, String name) throws Exception {
         String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
-        requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, "", ""),
+        requestSpecification.body(commonUtils.objectToJsonString(new Product(productId, name, "", ""),
                 "%s"));
 
         return requestSpecification.given()

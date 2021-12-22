@@ -2,6 +2,7 @@ package endpoints;
 
 import constants.EndpointRoutes;
 import io.restassured.specification.RequestSpecification;
+import utils.CommonUtils;
 
 import static io.restassured.RestAssured.given;
 
@@ -9,13 +10,15 @@ public class BaseEndpoint {
 
     //TODO check for runtime errors related to requestSpecification
     protected RequestSpecification requestSpecification;
-    protected EndpointRoutes endpointRoutes;
+    protected final EndpointRoutes endpointRoutes;
+    protected final CommonUtils commonUtils;
 
     private String base_url = "";
 
     public BaseEndpoint(String _base_url) {
         base_url = _base_url;
         endpointRoutes = new EndpointRoutes();
+        commonUtils = new CommonUtils();
     }
 
     /**

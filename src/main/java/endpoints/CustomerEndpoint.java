@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 import payload.BillingAddress;
 import payload.Customer;
 import payload.ShippingAddress;
-import utils.CommonUtils;
 
 import java.util.List;
 
@@ -81,7 +80,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params
-        requestSpecification.formParams(CommonUtils.objectToMap(
+        requestSpecification.formParams(commonUtils.objectToMap(
                 new Customer("", email, first_name, last_name, username, password)));
 
         return requestSpecification.given()
@@ -117,7 +116,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
         // The request body expects a JSON object, enclosed inside another object with the label 'billing'
         // So I build that object manually using a custom serializer
-        requestSpecification.body(CommonUtils.objectToJsonString(new BillingAddress(first_name, last_name, company,
+        requestSpecification.body(commonUtils.objectToJsonString(new BillingAddress(first_name, last_name, company,
                         address_1, address_2, city, state, postcode, country, email, phone),
                 "{ \"billing\" : %s}"));
 
@@ -152,7 +151,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
         // The request body expects a JSON object, enclosed inside another object with the label 'shipping'
         // So I build that object manually using a custom serializer
-        requestSpecification.body(CommonUtils.objectToJsonString(new ShippingAddress(first_name, last_name, company,
+        requestSpecification.body(commonUtils.objectToJsonString(new ShippingAddress(first_name, last_name, company,
                         address_1, address_2, city, postcode, country, state),
                 "{ \"shipping\" : %s}"));
 
