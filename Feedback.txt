@@ -9,7 +9,7 @@ Can be improved?
 - A lot of statics variables, for example:
 	private static CustomerEndpoint customerEndpoint;
 
-- In this case you can just return without defining a variable since it will be returned in the next line
+- In this case you can just return without defining a variable since it will be returned in the next line DONE
         Response response = requestSpecification.given()
             .contentType(ContentType.JSON)
             .when()

@@ -1,5 +1,6 @@
 package endpoints;
 
+import constants.EndpointRoutes;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
@@ -9,8 +10,11 @@ public class BaseEndpoint {
     static RequestSpecification requestSpecification;
     private static String base_url = "";
 
+    protected EndpointRoutes endpointRoutes;
+
     BaseEndpoint(String _base_url) {
         base_url = _base_url;
+        endpointRoutes = new EndpointRoutes();
     }
 
     /**

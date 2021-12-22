@@ -1,6 +1,5 @@
 package endpoints;
 
-import constants.EndpointRoutes;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import payload.Product;
@@ -22,7 +21,7 @@ public class ProductEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public Response getProductById(String productId) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
 
         return requestSpecification.given().when().get(endpointPath);
@@ -37,7 +36,7 @@ public class ProductEndpoint extends BaseEndpoint {
      */
     public Response getProductByQuantity(int quantity) throws Exception {
 
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH);
         requestSpecification.queryParams("per_page", quantity);
 
         return requestSpecification.given().when().get(endpointPath);
@@ -52,7 +51,7 @@ public class ProductEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public Response getProductsSorted(String order, String orderBy) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH);
         requestSpecification.queryParams("order", order, "orderby", orderBy);
 
         return requestSpecification.given().when().get(endpointPath);
@@ -69,7 +68,7 @@ public class ProductEndpoint extends BaseEndpoint {
      */
     @SuppressWarnings("unchecked")
     public Response postProduct(String name, String slug, String description) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH);
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH);
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params
@@ -94,7 +93,7 @@ public class ProductEndpoint extends BaseEndpoint {
      */
     public Response putProductDescription(String productId, String name, String slug, String description)
             throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
         requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, slug, description),
                 "%s"));
@@ -114,7 +113,7 @@ public class ProductEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public Response patchProductName(String productId, String name) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
         requestSpecification.body(CommonUtils.objectToJsonString(new Product(productId, name, "", ""),
                 "%s"));
@@ -133,7 +132,7 @@ public class ProductEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public Response deleteProductById(String productId) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.PRODUCT_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.PRODUCT_PATH + "/{id}");
         requestSpecification.pathParams("id", productId);
 
         // We force the deletion of the resource, as required by the API
