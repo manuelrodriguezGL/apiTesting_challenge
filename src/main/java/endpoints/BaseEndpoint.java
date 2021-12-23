@@ -1,16 +1,24 @@
 package endpoints;
 
+import constants.EndpointRoutes;
 import io.restassured.specification.RequestSpecification;
+import utils.CommonUtils;
 
 import static io.restassured.RestAssured.given;
 
 public class BaseEndpoint {
 
-    static RequestSpecification requestSpecification;
-    private static String base_url = "";
+    //TODO check for runtime errors related to requestSpecification
+    protected RequestSpecification requestSpecification;
+    protected final EndpointRoutes endpointRoutes;
+    protected final CommonUtils commonUtils;
 
-    BaseEndpoint(String _base_url) {
+    private String base_url = "";
+
+    public BaseEndpoint(String _base_url) {
         base_url = _base_url;
+        endpointRoutes = new EndpointRoutes();
+        commonUtils = new CommonUtils();
     }
 
     /**
@@ -20,7 +28,7 @@ public class BaseEndpoint {
      * @return A String representing the whole endpoint path
      * @throws Exception
      */
-    protected static String buildEndpointPath(String path) throws Exception {
+    protected String buildEndpointPath(String path) throws Exception {
         if (base_url.isEmpty())
             throw new Exception("Base URL can't be blanks!");
         return base_url + path;
@@ -33,7 +41,7 @@ public class BaseEndpoint {
      * @param psw Password
      * @return a RequestSpecification with API information
      */
-    public static RequestSpecification authenticate(String usr, String psw) {
+    public RequestSpecification authenticate(String usr, String psw) {
         requestSpecification = given().auth().preemptive().basic(usr, psw);
         return requestSpecification;
     }

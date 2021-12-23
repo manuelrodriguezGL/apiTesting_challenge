@@ -1,12 +1,10 @@
 package endpoints;
 
-import constants.EndpointRoutes;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import payload.BillingAddress;
 import payload.Customer;
 import payload.ShippingAddress;
-import utils.CommonUtils;
 
 import java.util.List;
 
@@ -26,12 +24,10 @@ public class CustomerEndpoint extends BaseEndpoint {
      */
     public Response getCustomerByID(String customerId) throws Exception {
 
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
-
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -44,12 +40,10 @@ public class CustomerEndpoint extends BaseEndpoint {
      */
     public Response getCustomerByQuantity(int quantity, String userRole) throws Exception {
 
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("per_page", quantity, "role", userRole);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
-
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -62,11 +56,10 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public Response getCustomersSorted(String order, String orderBy, String userRole) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("order", order, "orderby", orderBy, "role", userRole);
 
-        Response response = requestSpecification.given().when().get(endpointPath);
-        return response;
+        return requestSpecification.given().when().get(endpointPath);
     }
 
     /**
@@ -83,19 +76,17 @@ public class CustomerEndpoint extends BaseEndpoint {
     @SuppressWarnings("unchecked")
     public Response postCustomer(String email, String first_name, String last_name, String username,
                                  String password) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH);
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params
-        requestSpecification.formParams(CommonUtils.objectToMap(
+        requestSpecification.formParams(commonUtils.objectToMap(
                 new Customer("", email, first_name, last_name, username, password)));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.URLENC)
                 .when()
                 .post(endpointPath);
-
-        return response;
     }
 
     /**
@@ -120,21 +111,19 @@ public class CustomerEndpoint extends BaseEndpoint {
                                               String address_1, String address_2, String city, String state,
                                               String postcode, String country, String email, String phone)
             throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
 
         // The request body expects a JSON object, enclosed inside another object with the label 'billing'
         // So I build that object manually using a custom serializer
-        requestSpecification.body(CommonUtils.objectToJsonString(new BillingAddress(first_name, last_name, company,
+        requestSpecification.body(commonUtils.objectToJsonString(new BillingAddress(first_name, last_name, company,
                         address_1, address_2, city, state, postcode, country, email, phone),
                 "{ \"billing\" : %s}"));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.JSON)
                 .when()
                 .put(endpointPath);
-
-        return response;
     }
 
     /**
@@ -157,21 +146,19 @@ public class CustomerEndpoint extends BaseEndpoint {
                                                  String address_1, String address_2, String city, String postcode,
                                                  String country, String state)
             throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
 
         // The request body expects a JSON object, enclosed inside another object with the label 'shipping'
         // So I build that object manually using a custom serializer
-        requestSpecification.body(CommonUtils.objectToJsonString(new ShippingAddress(first_name, last_name, company,
+        requestSpecification.body(commonUtils.objectToJsonString(new ShippingAddress(first_name, last_name, company,
                         address_1, address_2, city, postcode, country, state),
                 "{ \"shipping\" : %s}"));
 
-        Response response = requestSpecification.given()
+        return requestSpecification.given()
                 .contentType(ContentType.JSON)
                 .when()
                 .patch(endpointPath);
-
-        return response;
     }
 
     /**
@@ -182,14 +169,13 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public Response deleteCustomerByID(String customerId) throws Exception {
-        String endpointPath = buildEndpointPath(EndpointRoutes.CUSTOMER_PATH + "/{id}");
+        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH + "/{id}");
         requestSpecification.pathParams("id", customerId);
 
         // We force the deletion of the resource, as required by the API
         requestSpecification.queryParams("force", Boolean.TRUE.toString());
 
-        Response response = requestSpecification.given().when().delete(endpointPath);
-        return response;
+        return requestSpecification.given().when().delete(endpointPath);
     }
 
     /**

@@ -12,11 +12,11 @@ import testBase.TestBase;
 
 public class CustomerTest extends TestBase {
 
-    private static CustomerEndpoint customerEndpoint;
+    private CustomerEndpoint customerEndpoint;
 
     @Test(description = "Get Customers by ID", groups = {"Customers"})
     @Parameters({"customerId"})
-    public static void getCustomersByID(String customerId) {
+    public void getCustomersByID(String customerId) {
         try {
             SoftAssert softAssert = new SoftAssert();
 
@@ -34,7 +34,7 @@ public class CustomerTest extends TestBase {
 
     @Test(description = "Get Customers by quantity", groups = {"Customers"})
     @Parameters({"quantity", "userRole"})
-    public static void getCustomersByQuantity(String quantity, String userRole) {
+    public void getCustomersByQuantity(String quantity, String userRole) {
         try {
             SoftAssert softAssert = new SoftAssert();
 
@@ -54,7 +54,7 @@ public class CustomerTest extends TestBase {
 
     @Test(description = "Post a new customer to database",
             groups = {"Customers"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
-    public static void postCustomer(String email, String first_name, String last_name, String username,
+    public void postCustomer(String email, String first_name, String last_name, String username,
                                     String password) {
 
         try {
@@ -72,7 +72,7 @@ public class CustomerTest extends TestBase {
 
     @Test(description = "Puts a new billing address into existing customer",
             groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
-    public static void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
+    public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                                  String address_1, String address_2, String city, String state,
                                                  String postcode, String country, String email, String phone) {
 
@@ -92,7 +92,7 @@ public class CustomerTest extends TestBase {
 
     @Test(description = "Patches an existing customer with a new shipping address",
             groups = "Customers", dataProvider = "ShippingAddress", dataProviderClass = CustomerDataProvider.class)
-    public static void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
+    public void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
                                                     String address_1, String address_2, String city, String state,
                                                     String postcode, String country) {
 
@@ -124,7 +124,7 @@ public class CustomerTest extends TestBase {
     @Test(description = "Deletes the last added customer",
             groups = "Customers")
     @Parameters({"order", "orderBy", "userRole"})
-    public static void deleteLastCustomer(String order, String orderBy, String userRole) {
+    public void deleteLastCustomer(String order, String orderBy, String userRole) {
         try {
             SoftAssert softAssert = new SoftAssert();
 
