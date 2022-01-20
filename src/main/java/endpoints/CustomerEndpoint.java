@@ -41,7 +41,7 @@ public class CustomerEndpoint extends BaseEndpoint {
     public Response getCustomerByQuantity(int quantity, String userRole) throws Exception {
 
         String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
-        requestSpecification.queryParams("per_page", quantity, "role", userRole);
+        requestSpecification.queryParams("context", "view","per_page", quantity, "role", userRole);
 
         return requestSpecification.given().when().get(endpointPath);
     }

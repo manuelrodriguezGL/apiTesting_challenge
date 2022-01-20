@@ -19,6 +19,7 @@ public class BaseEndpoint {
         base_url = _base_url;
         endpointRoutes = new EndpointRoutes();
         commonUtils = new CommonUtils();
+        requestSpecification = given();
     }
 
     /**
@@ -41,8 +42,10 @@ public class BaseEndpoint {
      * @param psw Password
      * @return a RequestSpecification with API information
      */
+    //TODO: Given that requestSpecification is not longer an static variable, you can't change it's value here like this
     public RequestSpecification authenticate(String usr, String psw) {
         requestSpecification = given().auth().preemptive().basic(usr, psw);
+        requestSpecification.body("{}");
         return requestSpecification;
     }
 }

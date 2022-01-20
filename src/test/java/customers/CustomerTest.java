@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import testBase.TestBase;
 
-public class CustomerTest extends TestBase {
+public class CustomerTest implements TestBase {
 
     private CustomerEndpoint customerEndpoint;
 
@@ -55,7 +55,7 @@ public class CustomerTest extends TestBase {
     @Test(description = "Post a new customer to database",
             groups = {"Customers"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
     public void postCustomer(String email, String first_name, String last_name, String username,
-                                    String password) {
+                             String password) {
 
         try {
             Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password);
@@ -73,8 +73,8 @@ public class CustomerTest extends TestBase {
     @Test(description = "Puts a new billing address into existing customer",
             groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
-                                                 String address_1, String address_2, String city, String state,
-                                                 String postcode, String country, String email, String phone) {
+                                          String address_1, String address_2, String city, String state,
+                                          String postcode, String country, String email, String phone) {
 
         try {
 
@@ -93,8 +93,8 @@ public class CustomerTest extends TestBase {
     @Test(description = "Patches an existing customer with a new shipping address",
             groups = "Customers", dataProvider = "ShippingAddress", dataProviderClass = CustomerDataProvider.class)
     public void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
-                                                    String address_1, String address_2, String city, String state,
-                                                    String postcode, String country) {
+                                             String address_1, String address_2, String city, String state,
+                                             String postcode, String country) {
 
         try {
 
@@ -147,8 +147,10 @@ public class CustomerTest extends TestBase {
 
     @BeforeMethod(alwaysRun = true,
             description = "Setup the customer endpoint to make the requests")
-    public void testSetup() {
-        customerEndpoint = new CustomerEndpoint(baseUrl);
+    @Parameters({"baseUrl", "api_user", "api_psw"})
+    public void testSetup(String _baseUrl, String usr, String psw) {
+        customerEndpoint = new CustomerEndpoint(_baseUrl);
+        customerEndpoint.authenticate(usr, psw);
     }
 }
 
