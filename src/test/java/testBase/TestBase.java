@@ -12,6 +12,5 @@ public interface TestBase {
     String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
 
     @BeforeMethod(alwaysRun = true)
-    @Parameters({"baseUrl", "api_user", "api_psw"})
-    void testSetup(String _baseUrl, String usr, String psw);
+    void testSetup(String _baseUrl, String endpointPath, String usr, String psw) throws Exception;
 }

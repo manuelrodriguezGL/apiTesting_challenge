@@ -1,1 +1,2 @@
+<parameter name="product_path" value="/products"/>
 <parameter name="product_quantity" value="1"/>

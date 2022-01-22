@@ -8,18 +8,16 @@ import static io.restassured.RestAssured.given;
 
 public class BaseEndpoint {
 
-    //TODO check for runtime errors related to requestSpecification
-    protected RequestSpecification requestSpecification;
     protected final EndpointRoutes endpointRoutes;
     protected final CommonUtils commonUtils;
-
+    protected RequestSpecification requestSpecification;
     private String base_url = "";
 
     public BaseEndpoint(String _base_url) {
         base_url = _base_url;
         endpointRoutes = new EndpointRoutes();
         commonUtils = new CommonUtils();
-        requestSpecification = given();
+        requestSpecification = null;
     }
 
     /**
@@ -42,10 +40,10 @@ public class BaseEndpoint {
      * @param psw Password
      * @return a RequestSpecification with API information
      */
-    //TODO: Given that requestSpecification is not longer an static variable, you can't change it's value here like this
     public RequestSpecification authenticate(String usr, String psw) {
-        requestSpecification = given().auth().preemptive().basic(usr, psw);
-        requestSpecification.body("{}");
+        if (requestSpecification == null) {
+            requestSpecification = given().auth().preemptive().basic(usr, psw);
+        }
         return requestSpecification;
     }
 }

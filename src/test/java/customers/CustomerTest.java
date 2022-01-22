@@ -23,7 +23,7 @@ public class CustomerTest implements TestBase {
             Response response = customerEndpoint.getCustomerByID(customerId);
             response.then().log().all();
 
-            softAssert.assertEquals(response.getStatusCode(), 201);
+            softAssert.assertEquals(response.getStatusCode(), 200);
             softAssert.assertEquals(response.jsonPath().get("id").toString(), customerId);
             softAssert.assertAll(String.format("%s %s %s",
                     GLOBAL_TEST_FAILED_MESSAGE, "Could not find customer with ID :", customerId));
@@ -58,12 +58,21 @@ public class CustomerTest implements TestBase {
                              String password) {
 
         try {
+            SoftAssert softAssert = new SoftAssert();
             Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password);
             response.then().log().all();
+            int postStatusCode = response.getStatusCode();
 
-            Assert.assertEquals(response.statusCode(), 201,
-                    String.format("%s %s %s",
-                            GLOBAL_TEST_FAILED_MESSAGE, "Could not create customer with username :", username));
+            String customerId = response.jsonPath().get("id").toString();
+
+            response = customerEndpoint.getCustomerByParams(customerId, email, first_name, last_name, username, password);
+            response.then().log().all();
+            int getStatusCode = response.getStatusCode();
+
+            softAssert.assertEquals(postStatusCode, 201);
+            softAssert.assertEquals(getStatusCode, 200);
+            softAssert.assertAll(String.format("%s %s %s",
+                    GLOBAL_TEST_FAILED_MESSAGE, "Could not create customer with username :", username));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -71,20 +80,27 @@ public class CustomerTest implements TestBase {
     }
 
     @Test(description = "Puts a new billing address into existing customer",
-            groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
+            groups = "debug", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                           String address_1, String address_2, String city, String state,
                                           String postcode, String country, String email, String phone) {
 
         try {
 
+            SoftAssert softAssert = new SoftAssert();
             Response response = customerEndpoint.putCustomerBillingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, state, postcode, country, email, phone);
             response.then().log().all();
+            int putStatusCode = response.getStatusCode();
 
-            Assert.assertEquals(response.statusCode(), 200,
-                    String.format("%s %s %s",
-                            GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
+            response = customerEndpoint.getCustomerByParams(customerId, email, first_name, last_name, "", "");
+            response.then().log().all();
+            String resultAddress = response.jsonPath().get("billing.address_1").toString();
+
+            softAssert.assertEquals(putStatusCode, 200);
+            softAssert.assertEquals(address_1, resultAddress);
+            softAssert.assertAll(String.format("%s %s %s",
+                    GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -147,9 +163,10 @@ public class CustomerTest implements TestBase {
 
     @BeforeMethod(alwaysRun = true,
             description = "Setup the customer endpoint to make the requests")
-    @Parameters({"baseUrl", "api_user", "api_psw"})
-    public void testSetup(String _baseUrl, String usr, String psw) {
+    @Parameters({"baseUrl", "customer_path", "api_user", "api_psw"})
+    public void testSetup(String _baseUrl, String customerPath, String usr, String psw) throws Exception {
         customerEndpoint = new CustomerEndpoint(_baseUrl);
+        customerEndpoint.setEndpointPath(customerPath);
         customerEndpoint.authenticate(usr, psw);
     }
 }

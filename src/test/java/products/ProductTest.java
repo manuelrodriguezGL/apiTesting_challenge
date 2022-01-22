@@ -104,8 +104,9 @@ public class ProductTest implements TestBase {
 
     @BeforeMethod(alwaysRun = true,
             description = "Setup the product endpoint to make the requests")
-    @Parameters({"baseUrl", "api_user", "api_psw"})
-    public void testSetup(String _baseUrl, String usr, String psw) {
+    @Parameters({"baseUrl", "product_path", "api_user", "api_psw"})
+    public void testSetup(String _baseUrl, String productPath, String usr, String psw) {
+        //TODO finish path implementation
         productEndpoint = new ProductEndpoint(_baseUrl);
         productEndpoint.authenticate(usr, psw);
     }
