@@ -32,9 +32,22 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @param customerId Customer ID
      * @return An HTTP Response object with customer inside a JSON
      */
+    //TODO eventually, get rid of this method and replace it with token implementation
     public Response getCustomerByID(String customerId) {
         requestSpecification.pathParams("id", customerId);
-        requestSpecification.log().all();
+        return requestSpecification.given().when().get(endpointPath + "/{id}");
+    }
+
+
+    /**
+     * Gets a Customer by ID
+     *
+     * @param customerId Customer ID
+     * @return An HTTP Response object with customer inside a JSON
+     */
+    public Response getCustomerByID(String customerId, String token) {
+        requestSpecification = initializeRequest(token);
+        requestSpecification.pathParams("id", customerId);
         return requestSpecification.given().when().get(endpointPath + "/{id}");
     }
 
@@ -46,39 +59,13 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @return An HTTP Response object with all customers inside a JSON
      * @throws Exception
      */
-    public Response getCustomerByQuantity(int quantity, String userRole) throws Exception {
+    public Response getCustomerByQuantity(int quantity, String userRole)
+            throws Exception {
 
         String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
         requestSpecification.queryParams("context", "view", "per_page", quantity, "role", userRole);
 
         return requestSpecification.given().when().get(endpointPath);
-    }
-
-    /**
-     * Gets user details based on information
-     *
-     * @param customerId Customer's ID
-     * @param email      Customer's email address
-     * @param first_name Customer's first name
-     * @param last_name  Customer's last name
-     * @param username   Customer's user name
-     * @param password   Customer's password
-     * @return An HTTP Response object with all customer data inside a JSON
-     */
-    @SuppressWarnings("unchecked")
-    public Response getCustomerByParams(String customerId, String email, String first_name, String last_name, String username,
-                                        String password) {
-
-        // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
-        // I delegate that into RestAssured, which needs an Object to build the form params
-        requestSpecification.formParams(commonUtils.objectToMap(
-                new Customer(customerId, email, first_name, last_name, username, password)));
-        requestSpecification.pathParams("id", customerId);
-
-        return requestSpecification.given()
-                .contentType(ContentType.URLENC)
-                .when()
-                .get(endpointPath + "/{id}");
     }
 
     /**
@@ -108,7 +95,9 @@ public class CustomerEndpoint extends BaseEndpoint {
      */
     @SuppressWarnings("unchecked")
     public Response postCustomer(String email, String first_name, String last_name, String username,
-                                 String password) {
+                                 String password, String token) {
+
+        requestSpecification = initializeRequest(token);
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params

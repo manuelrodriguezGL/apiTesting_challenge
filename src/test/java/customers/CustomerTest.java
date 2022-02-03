@@ -12,6 +12,7 @@ import testBase.TestBase;
 
 public class CustomerTest implements TestBase {
 
+    String authToken;
     private CustomerEndpoint customerEndpoint;
 
     @Test(description = "Get Customers by ID", groups = {"Customers"})
@@ -52,20 +53,22 @@ public class CustomerTest implements TestBase {
         }
     }
 
-    @Test(description = "Post a new customer to database",
-            groups = {"Customers"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
+    @Test(description = "Post a new customer to database and validates it was created",
+            groups = {"debug"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
     public void postCustomer(String email, String first_name, String last_name, String username,
                              String password) {
+        //TODO: Now all I have to do, is mimic this implementation across all tests
+        // And get rid of the old authentication method
 
         try {
             SoftAssert softAssert = new SoftAssert();
-            Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password);
+            Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password, authToken);
             response.then().log().all();
             int postStatusCode = response.getStatusCode();
 
             String customerId = response.jsonPath().get("id").toString();
 
-            response = customerEndpoint.getCustomerByParams(customerId, email, first_name, last_name, username, password);
+            response = customerEndpoint.getCustomerByID(customerId, authToken);
             response.then().log().all();
             int getStatusCode = response.getStatusCode();
 
@@ -80,11 +83,10 @@ public class CustomerTest implements TestBase {
     }
 
     @Test(description = "Puts a new billing address into existing customer",
-            groups = "debug", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
+            groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                           String address_1, String address_2, String city, String state,
                                           String postcode, String country, String email, String phone) {
-
         try {
 
             SoftAssert softAssert = new SoftAssert();
@@ -93,7 +95,7 @@ public class CustomerTest implements TestBase {
             response.then().log().all();
             int putStatusCode = response.getStatusCode();
 
-            response = customerEndpoint.getCustomerByParams(customerId, email, first_name, last_name, "", "");
+            response = customerEndpoint.getCustomerByID(customerId, authToken);
             response.then().log().all();
             String resultAddress = response.jsonPath().get("billing.address_1").toString();
 
@@ -167,7 +169,8 @@ public class CustomerTest implements TestBase {
     public void testSetup(String _baseUrl, String customerPath, String usr, String psw) throws Exception {
         customerEndpoint = new CustomerEndpoint(_baseUrl);
         customerEndpoint.setEndpointPath(customerPath);
-        customerEndpoint.authenticate(usr, psw);
+        authToken = customerEndpoint.getAuthToken(usr, psw);
+        //customerEndpoint.authenticate(usr, psw);
     }
 }
 
