@@ -15,15 +15,7 @@ public class CustomerEndpoint extends BaseEndpoint {
 
     public CustomerEndpoint(String baseUrl) {
         super(baseUrl);
-        endpointPath = "";
-    }
-
-    public String getEndpointPath() {
-        return endpointPath;
-    }
-
-    public void setEndpointPath(String path) throws Exception {
-        endpointPath = buildEndpointPath(path);
+        endpointPath = baseUrl;
     }
 
     /**

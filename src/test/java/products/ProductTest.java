@@ -11,7 +11,7 @@ import testBase.TestBase;
 
 import static org.hamcrest.Matchers.hasSize;
 
-public class ProductTest extends TestBase {
+public class ProductTest implements TestBase {
 
     private ProductEndpoint productEndpoint;
 
@@ -101,10 +101,11 @@ public class ProductTest extends TestBase {
         }
     }
 
-
     @BeforeMethod(alwaysRun = true,
-            description = "Setup the product endpoint to make the requests")
-    public void testSetup() {
-        productEndpoint = new ProductEndpoint(baseUrl);
+            description = "Setup the customer endpoint to make the requests")
+    @Parameters({"baseUrl", "customer_path", "api_user", "api_psw"})
+    public void testSetup(String baseUrl, String customerPath, String usr, String psw) {
+        productEndpoint = new ProductEndpoint(baseUrl + customerPath);
+        productEndpoint.authenticate(usr, psw);
     }
 }
