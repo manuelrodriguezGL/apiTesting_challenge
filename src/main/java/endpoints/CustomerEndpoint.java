@@ -46,7 +46,6 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @return An HTTP Response object with customer inside a JSON
      */
     public Response getCustomerByID(String customerId, String token) {
-        requestSpecification = initializeRequest(token);
         requestSpecification.pathParams("id", customerId);
         return requestSpecification.given().when().get(endpointPath + "/{id}");
     }
@@ -63,7 +62,7 @@ public class CustomerEndpoint extends BaseEndpoint {
             throws Exception {
 
         String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
-        requestSpecification.queryParams("context", "view", "per_page", quantity, "role", userRole);
+        requestSpecification.queryParams("per_page", quantity, "role", userRole);
 
         return requestSpecification.given().when().get(endpointPath);
     }
@@ -96,8 +95,6 @@ public class CustomerEndpoint extends BaseEndpoint {
     @SuppressWarnings("unchecked")
     public Response postCustomer(String email, String first_name, String last_name, String username,
                                  String password, String token) {
-
-        requestSpecification = initializeRequest(token);
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params

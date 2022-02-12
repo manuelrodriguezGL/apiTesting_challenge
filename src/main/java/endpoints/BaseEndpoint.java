@@ -1,8 +1,6 @@
 package endpoints;
 
 import constants.EndpointRoutes;
-import io.restassured.RestAssured;
-import io.restassured.specification.FilterableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
 import utils.CommonUtils;
 
@@ -20,7 +18,6 @@ public class BaseEndpoint {
         base_url = _base_url;
         endpointRoutes = new EndpointRoutes();
         commonUtils = new CommonUtils();
-        requestSpecification = null;
     }
 
     /**
@@ -44,30 +41,7 @@ public class BaseEndpoint {
      * @return a RequestSpecification with API information
      */
     public RequestSpecification authenticate(String usr, String psw) {
-        if (requestSpecification == null) {
-            requestSpecification = given().auth().preemptive().basic(usr, psw);
-        }
-        return requestSpecification;
-    }
-
-    public String getAuthToken(String usr, String psw) {
-        if (authToken.isEmpty()) {
-            FilterableRequestSpecification req =
-                    (FilterableRequestSpecification) authenticate(usr, psw);
-            authToken = req.getHeaders().getValue("authorization");
-        }
-        return authToken;
-    }
-
-    /**
-     * Performs a initialization that is called before each request
-     *
-     * @return a RequestSpecification with API information
-     */
-    public RequestSpecification initializeRequest(String token) {
-        requestSpecification = null;
-        requestSpecification = RestAssured.given();
-        requestSpecification.header("authorization", token);
+        requestSpecification = given().auth().preemptive().basic(usr, psw);
         return requestSpecification;
     }
 }

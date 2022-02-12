@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import testBase.TestBase;
 
-public class CustomerTest implements TestBase {
+public class CustomerTest extends TestBase {
 
     String authToken;
     private CustomerEndpoint customerEndpoint;
@@ -56,9 +56,7 @@ public class CustomerTest implements TestBase {
     @Test(description = "Post a new customer to database and validates it was created",
             groups = {"debug"}, dataProvider = "CustomerFaker", dataProviderClass = CustomerDataProvider.class)
     public void postCustomer(String email, String first_name, String last_name, String username,
-                             String password) {
-        //TODO: Now all I have to do, is mimic this implementation across all tests
-        // And get rid of the old authentication method
+                                    String password) {
 
         try {
             SoftAssert softAssert = new SoftAssert();
@@ -85,8 +83,8 @@ public class CustomerTest implements TestBase {
     @Test(description = "Puts a new billing address into existing customer",
             groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
     public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
-                                          String address_1, String address_2, String city, String state,
-                                          String postcode, String country, String email, String phone) {
+                                                 String address_1, String address_2, String city, String state,
+                                                 String postcode, String country, String email, String phone) {
         try {
 
             SoftAssert softAssert = new SoftAssert();
@@ -111,8 +109,8 @@ public class CustomerTest implements TestBase {
     @Test(description = "Patches an existing customer with a new shipping address",
             groups = "Customers", dataProvider = "ShippingAddress", dataProviderClass = CustomerDataProvider.class)
     public void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
-                                             String address_1, String address_2, String city, String state,
-                                             String postcode, String country) {
+                                                    String address_1, String address_2, String city, String state,
+                                                    String postcode, String country) {
 
         try {
 
@@ -165,12 +163,8 @@ public class CustomerTest implements TestBase {
 
     @BeforeMethod(alwaysRun = true,
             description = "Setup the customer endpoint to make the requests")
-    @Parameters({"baseUrl", "customer_path", "api_user", "api_psw"})
-    public void testSetup(String _baseUrl, String customerPath, String usr, String psw) throws Exception {
-        customerEndpoint = new CustomerEndpoint(_baseUrl);
-        customerEndpoint.setEndpointPath(customerPath);
-        authToken = customerEndpoint.getAuthToken(usr, psw);
-        //customerEndpoint.authenticate(usr, psw);
+    public void testSetup() {
+        customerEndpoint = new CustomerEndpoint(baseUrl);
     }
 }
 
