@@ -194,4 +194,13 @@ public class CustomerEndpoint extends BaseEndpoint {
         List<Customer> customers = getCustomerList("desc", orderBy, userRole);
         return customers.get(0).getId();
     }
+
+    public Customer createCustomerFromResponse(Response response) {
+        try {
+            Customer customer = response.jsonPath().getObject("", Customer.class);
+            return customer;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

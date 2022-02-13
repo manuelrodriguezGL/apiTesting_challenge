@@ -1,5 +1,6 @@
 package customers;
 
+import comparators.CustomerComparator;
 import dataProviders.CustomerDataProvider;
 import endpoints.CustomerEndpoint;
 import io.restassured.response.Response;
@@ -14,7 +15,7 @@ public class CustomerTest implements TestBase {
 
     private CustomerEndpoint customerEndpoint;
 
-    @Test(description = "Get Customers by ID", groups = {"debug"})
+    @Test(description = "Get Customers by ID", groups = {"Customers"})
     @Parameters({"customerId"})
     public void getCustomersByID(String customerId) {
         try {
@@ -59,10 +60,14 @@ public class CustomerTest implements TestBase {
 
         try {
             SoftAssert softAssert = new SoftAssert();
+            CustomerComparator customerComparator = new CustomerComparator();
             Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password);
             response.then().log().all();
 
             softAssert.assertEquals(response.getStatusCode(), 201);
+            softAssert.assertTrue(customerComparator.compareCustomer(
+                    customerEndpoint.createCustomerFromResponse(response), email, first_name, last_name, username, ""
+            ));
             softAssert.assertAll(String.format("%s %s %s",
                     GLOBAL_TEST_FAILED_MESSAGE, "Could not create customer with username :", username));
         } catch (Exception e) {
