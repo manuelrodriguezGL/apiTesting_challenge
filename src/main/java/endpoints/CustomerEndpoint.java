@@ -37,12 +37,8 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @return An HTTP Response object with all customers inside a JSON
      * @throws Exception
      */
-    public Response getCustomerByQuantity(int quantity, String userRole)
-            throws Exception {
-
-        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
+    public Response getCustomerByQuantity(int quantity, String userRole) {
         requestSpecification.queryParams("per_page", quantity, "role", userRole);
-
         return requestSpecification.given().when().get(endpointPath);
     }
 
@@ -54,10 +50,8 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @param userRole The role of the user, as required by the API
      * @return An HTTP Response object with all customers inside a JSON
      */
-    public Response getCustomersSorted(String order, String orderBy, String userRole) throws Exception {
-        String endpointPath = buildEndpointPath(endpointRoutes.CUSTOMER_PATH);
+    public Response getCustomersSorted(String order, String orderBy, String userRole) {
         requestSpecification.queryParams("order", order, "orderby", orderBy, "role", userRole);
-
         return requestSpecification.given().when().get(endpointPath);
     }
 
