@@ -62,16 +62,8 @@ public class CustomerTest implements TestBase {
             SoftAssert softAssert = new SoftAssert();
             Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password, authToken);
             response.then().log().all();
-            int postStatusCode = response.getStatusCode();
 
-            String customerId = response.jsonPath().get("id").toString();
-
-            response = customerEndpoint.getCustomerByID(customerId, authToken);
-            response.then().log().all();
-            int getStatusCode = response.getStatusCode();
-
-            softAssert.assertEquals(postStatusCode, 201);
-            softAssert.assertEquals(getStatusCode, 200);
+            softAssert.assertEquals(response.getStatusCode(), 201);
             softAssert.assertAll(String.format("%s %s %s",
                     GLOBAL_TEST_FAILED_MESSAGE, "Could not create customer with username :", username));
         } catch (Exception e) {
@@ -91,14 +83,8 @@ public class CustomerTest implements TestBase {
             Response response = customerEndpoint.putCustomerBillingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, state, postcode, country, email, phone);
             response.then().log().all();
-            int putStatusCode = response.getStatusCode();
 
-            response = customerEndpoint.getCustomerByID(customerId, authToken);
-            response.then().log().all();
-            String resultAddress = response.jsonPath().get("billing.address_1").toString();
-
-            softAssert.assertEquals(putStatusCode, 200);
-            softAssert.assertEquals(address_1, resultAddress);
+            softAssert.assertEquals(response.getStatusCode(), 200);
             softAssert.assertAll(String.format("%s %s %s",
                     GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
         } catch (Exception e) {

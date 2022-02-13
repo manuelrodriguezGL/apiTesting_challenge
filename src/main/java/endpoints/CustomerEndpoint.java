@@ -24,20 +24,7 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @param customerId Customer ID
      * @return An HTTP Response object with customer inside a JSON
      */
-    //TODO eventually, get rid of this method and replace it with token implementation
     public Response getCustomerByID(String customerId) {
-        requestSpecification.pathParams("id", customerId);
-        return requestSpecification.given().when().get(endpointPath + "/{id}");
-    }
-
-
-    /**
-     * Gets a Customer by ID
-     *
-     * @param customerId Customer ID
-     * @return An HTTP Response object with customer inside a JSON
-     */
-    public Response getCustomerByID(String customerId, String token) {
         requestSpecification.pathParams("id", customerId);
         return requestSpecification.given().when().get(endpointPath + "/{id}");
     }
