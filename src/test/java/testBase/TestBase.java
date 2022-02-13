@@ -12,7 +12,6 @@ public interface TestBase {
 
     String ORDER = "desc";
     String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
-    //String baseUrl = "";
 
     @BeforeMethod(alwaysRun = true)
     public void testSetup(String _baseUrl, String endpointPath, String usr, String psw);

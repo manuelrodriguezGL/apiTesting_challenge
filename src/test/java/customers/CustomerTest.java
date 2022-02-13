@@ -12,7 +12,6 @@ import testBase.TestBase;
 
 public class CustomerTest implements TestBase {
 
-    String authToken;
     private CustomerEndpoint customerEndpoint;
 
     @Test(description = "Get Customers by ID", groups = {"debug"})
@@ -60,7 +59,7 @@ public class CustomerTest implements TestBase {
 
         try {
             SoftAssert softAssert = new SoftAssert();
-            Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password, authToken);
+            Response response = customerEndpoint.postCustomer(email, first_name, last_name, username, password);
             response.then().log().all();
 
             softAssert.assertEquals(response.getStatusCode(), 201);

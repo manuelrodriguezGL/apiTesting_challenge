@@ -73,7 +73,7 @@ public class CustomerEndpoint extends BaseEndpoint {
      */
     @SuppressWarnings("unchecked")
     public Response postCustomer(String email, String first_name, String last_name, String username,
-                                 String password, String token) {
+                                 String password) {
 
         // The API expects URL encoded data. Since JSON library doesn't have a way to serialize that,
         // I delegate that into RestAssured, which needs an Object to build the form params

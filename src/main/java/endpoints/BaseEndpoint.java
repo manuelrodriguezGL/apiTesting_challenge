@@ -11,7 +11,6 @@ public class BaseEndpoint {
     protected final EndpointRoutes endpointRoutes;
     protected final CommonUtils commonUtils;
     protected RequestSpecification requestSpecification;
-    protected String authToken = "";
     private String base_url = "";
 
     public BaseEndpoint(String _base_url) {
