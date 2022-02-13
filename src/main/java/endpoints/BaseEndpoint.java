@@ -17,19 +17,6 @@ public class BaseEndpoint {
     }
 
     /**
-     * Creates the endpoint path, in cases where it needs more than just the base URL
-     *
-     * @param path The additional path endpoints
-     * @return A String representing the whole endpoint path
-     * @throws Exception
-     */
-    protected String buildEndpointPath(String path) throws Exception {
-        if (base_url.isEmpty())
-            throw new Exception("Base URL can't be blanks!");
-        return base_url + path;
-    }
-
-    /**
      * Performs basic auth on the endpoint, using RestAssured
      *
      * @param usr User
