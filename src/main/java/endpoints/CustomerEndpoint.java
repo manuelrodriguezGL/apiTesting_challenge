@@ -203,4 +203,13 @@ public class CustomerEndpoint extends BaseEndpoint {
             throw e;
         }
     }
+
+    public BillingAddress createBillingAddressFromResponse(Response response) {
+        try {
+            BillingAddress billingAddress = response.jsonPath().getObject("billing", BillingAddress.class);
+            return billingAddress;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

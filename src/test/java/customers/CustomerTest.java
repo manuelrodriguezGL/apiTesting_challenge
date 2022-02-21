@@ -84,11 +84,16 @@ public class CustomerTest implements TestBase {
         try {
 
             SoftAssert softAssert = new SoftAssert();
+            CustomerComparator customerComparator = new CustomerComparator();
             Response response = customerEndpoint.putCustomerBillingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, state, postcode, country, email, phone);
             response.then().log().all();
 
             softAssert.assertEquals(response.getStatusCode(), 200);
+            softAssert.assertTrue(customerComparator.compareBillingAddress(
+                    customerEndpoint.createBillingAddressFromResponse(response), first_name, last_name, company,
+                    address_1, address_2, city, state, postcode, country, email, phone
+            ));
             softAssert.assertAll(String.format("%s %s %s",
                     GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
         } catch (Exception e) {
