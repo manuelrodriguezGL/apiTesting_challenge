@@ -51,7 +51,7 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @return An HTTP Response object with all customers inside a JSON
      */
     public Response getCustomersSorted(String order, String orderBy, String userRole) {
-        requestSpecification.queryParams("order", order, "orderby", orderBy, "role", userRole);
+        requestSpecification.queryParams("order", order, "orderby", "id", "role", "customer");
         return requestSpecification.given().when().get(endpointPath);
     }
 
@@ -177,21 +177,19 @@ public class CustomerEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public List<Customer> getCustomerList(String order, String orderBy, String userRole) throws Exception {
-        return getCustomersSorted(order, orderBy, userRole).jsonPath().getList("", Customer.class);
+        return getCustomersSorted(order, "", "").jsonPath().getList("", Customer.class);
     }
 
     /**
      * Gets the last added customer
      *
      * @param order    Order of sort criteria: ascending or descending
-     * @param orderBy  Order by criteria: Field to order the customers by
-     * @param userRole The role of the user, as required by the API
      * @return A String with last added customer ID
      * @throws Exception
      */
-    public String getLastCustomerID(String order, String orderBy, String userRole) throws Exception {
+    public String getLastCustomerID(String order) throws Exception {
         // Since we need the last customer, we force the 'desc' value
-        List<Customer> customers = getCustomerList("desc", orderBy, userRole);
+        List<Customer> customers = getCustomerList(order, "", "");
         return customers.get(0).getId();
     }
 

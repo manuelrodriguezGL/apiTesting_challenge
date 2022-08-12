@@ -76,15 +76,20 @@ public class CustomerTest implements TestBase {
 
     }
 
+    /**
+     * This test assumes there's at least one customer already on database
+     */
     @Test(description = "Puts a new billing address into existing customer",
             groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class)
-    public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
+    public void putCustomerBillingAddress(String _customerId, String first_name, String last_name, String company,
                                           String address_1, String address_2, String city, String state,
                                           String postcode, String country, String email, String phone) {
         try {
 
             SoftAssert softAssert = new SoftAssert();
             CustomerComparator customerComparator = new CustomerComparator();
+
+            String customerId = customerEndpoint.getLastCustomerID(ORDER);
             Response response = customerEndpoint.putCustomerBillingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, state, postcode, country, email, phone);
             response.then().log().all();
@@ -139,7 +144,7 @@ public class CustomerTest implements TestBase {
         try {
             SoftAssert softAssert = new SoftAssert();
 
-            String customerId = customerEndpoint.getLastCustomerID(ORDER, orderBy, userRole);
+            String customerId = customerEndpoint.getLastCustomerID(ORDER);
 
             Response response = customerEndpoint.deleteCustomerByID(customerId);
             response.then().log().all();
