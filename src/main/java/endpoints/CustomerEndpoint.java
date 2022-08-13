@@ -183,7 +183,7 @@ public class CustomerEndpoint extends BaseEndpoint {
     /**
      * Gets the last added customer
      *
-     * @param order    Order of sort criteria: ascending or descending
+     * @param order Order of sort criteria: ascending or descending
      * @return A String with last added customer ID
      * @throws Exception
      */
@@ -206,6 +206,15 @@ public class CustomerEndpoint extends BaseEndpoint {
         try {
             BillingAddress billingAddress = response.jsonPath().getObject("billing", BillingAddress.class);
             return billingAddress;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public ShippingAddress createShippingAddressFromResponse(Response response) {
+        try {
+            ShippingAddress shippingAddress = response.jsonPath().getObject("shipping", ShippingAddress.class);
+            return shippingAddress;
         } catch (Exception e) {
             throw e;
         }

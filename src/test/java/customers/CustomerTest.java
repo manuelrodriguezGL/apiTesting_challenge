@@ -108,19 +108,26 @@ public class CustomerTest implements TestBase {
 
     @Test(description = "Patches an existing customer with a new shipping address",
             groups = "Customers", dataProvider = "ShippingAddress", dataProviderClass = CustomerDataProvider.class)
-    public void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
+    public void patchCustomerShippingAddress(String _customerId, String first_name, String last_name, String company,
                                              String address_1, String address_2, String city, String state,
                                              String postcode, String country) {
 
         try {
+            SoftAssert softAssert = new SoftAssert();
+            CustomerComparator customerComparator = new CustomerComparator();
 
+            String customerId = customerEndpoint.getLastCustomerID(ORDER);
             Response response = customerEndpoint.patchCustomerShippingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, postcode, country, state);
             response.then().log().all();
 
-            Assert.assertEquals(response.statusCode(), 200,
-                    String.format("%s %s %s",
-                            GLOBAL_TEST_FAILED_MESSAGE, "Could not PATCH shipping address for customer ID :", customerId));
+            softAssert.assertEquals(response.statusCode(), 200);
+            softAssert.assertTrue(customerComparator.compareShippingAddress(
+                    customerEndpoint.createShippingAddressFromResponse(response), first_name, last_name, company,
+                    address_1, address_2, city, state, postcode, country));
+
+            softAssert.assertAll(String.format("%s %s %s",
+                    GLOBAL_TEST_FAILED_MESSAGE, "Could not PATCH shipping address for customer ID :", customerId));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
