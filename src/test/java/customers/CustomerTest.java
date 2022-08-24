@@ -48,8 +48,14 @@ public class CustomerTest implements TestBase {
             /* For the sake of this example, I'm getting the last customer added.
                 But I'll leave the parameter so the test can be used both ways
              */
+            // !!!! Comment these lines if using parameters !!!!!!
             String customerId = customerEndpoint.getLastCustomerID(ORDER);
             Response response = customerEndpoint.getCustomerByID(customerId);
+            // !!!!!!!
+
+            //!!!!! Uncomment this line if using parameters !!!!!
+            // Response response = customerEndpoint.getCustomerByID(_customerId);
+
             response.then().log().all();
 
             softAssert.assertEquals(response.getStatusCode(), 200);
