@@ -19,9 +19,9 @@
     <test name="API Tests">
         <groups>
             <run>
-                &debugTests;
-<!--                &excludedTests;-->
-<!--                &testGroups;-->
+<!--                &debugTests;-->
+                &excludedTests;
+                &testGroups;
             </run>
         </groups>
         &classes;
