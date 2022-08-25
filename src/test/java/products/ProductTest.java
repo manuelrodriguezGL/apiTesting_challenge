@@ -15,6 +15,12 @@ public class ProductTest implements TestBase {
 
     private ProductEndpoint productEndpoint;
 
+    /*TODO
+    Move post test first
+    Add priority to tests
+    Add Product comparator
+    Refactor tests
+     */
     @Test(description = "Gets a predefined number of products", groups = {"Products"})
     @Parameters({"product_quantity"})
     public void getProductsByQuantity(String quantity) {
