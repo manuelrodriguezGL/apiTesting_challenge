@@ -9,6 +9,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import testBase.TestBase;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 public class ProductTest implements TestBase {
@@ -21,8 +22,7 @@ public class ProductTest implements TestBase {
     Add Product comparator
     Refactor tests
      */
-
-    @Test(description = "Post a new product to database",
+    @Test(description = "Posts a new product to database",
             groups = {"Products"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class,
     priority = 0)
     public void postProduct(String name, String slug, String description) {
@@ -30,6 +30,9 @@ public class ProductTest implements TestBase {
             Response response = productEndpoint.postProduct(name, slug, description);
             response.then()
                     .assertThat().statusCode(201)
+                    .body("name", equalTo(name))
+                    .body("slug", equalTo(slug.toLowerCase()))
+                    .body("description", equalTo(description))
                     .log().all();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
@@ -42,12 +45,9 @@ public class ProductTest implements TestBase {
         try {
             Response response = productEndpoint.getProductByQuantity(Integer.parseInt(quantity));
             response.then()
-                    .assertThat().body("id", hasSize(Integer.parseInt(quantity)))
-                    .and()
-                    .statusCode(200)
+                    .assertThat().statusCode(200)
+                    .body("id", hasSize(Integer.parseInt(quantity)))
                     .log().all();
-
-
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -58,9 +58,12 @@ public class ProductTest implements TestBase {
             priority = 1)
     public void putProductDescription(String productId, String name, String slug, String description) {
         try {
+            // To have a different description on every run
+            description = description + Math.random();
             Response response = productEndpoint.putProductDescription(productId, name, slug, description);
             response.then()
                     .assertThat().statusCode(200)
+                    .body("description", equalTo(description))
                     .log().all();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
