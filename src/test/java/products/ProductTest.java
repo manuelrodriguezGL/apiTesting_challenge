@@ -21,7 +21,22 @@ public class ProductTest implements TestBase {
     Add Product comparator
     Refactor tests
      */
-    @Test(description = "Gets a predefined number of products", groups = {"Products"})
+
+    @Test(description = "Post a new product to database",
+            groups = {"Products"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class,
+    priority = 0)
+    public void postProduct(String name, String slug, String description) {
+        try {
+            Response response = productEndpoint.postProduct(name, slug, description);
+            response.then()
+                    .assertThat().statusCode(201)
+                    .log().all();
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test(description = "Gets a predefined number of products", groups = {"Products"}, priority = 1)
     @Parameters({"product_quantity"})
     public void getProductsByQuantity(String quantity) {
         try {
@@ -38,21 +53,9 @@ public class ProductTest implements TestBase {
         }
     }
 
-    @Test(description = "Post a new product to database",
-            groups = {"Products"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class)
-    public void postProduct(String name, String slug, String description) {
-        try {
-            Response response = productEndpoint.postProduct(name, slug, description);
-            response.then()
-                    .assertThat().statusCode(201)
-                    .log().all();
-        } catch (Exception e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
     @Test(description = "Puts a new description into existing product",
-            groups = "Products", dataProvider = "ProductDescription", dataProviderClass = ProductDataProvider.class)
+            groups = "Products", dataProvider = "ProductDescription", dataProviderClass = ProductDataProvider.class,
+            priority = 1)
     public void putProductDescription(String productId, String name, String slug, String description) {
         try {
             Response response = productEndpoint.putProductDescription(productId, name, slug, description);
@@ -65,7 +68,8 @@ public class ProductTest implements TestBase {
     }
 
     @Test(description = "Patches an existing product with a new name",
-            groups = "Products", dataProvider = "ProductName", dataProviderClass = ProductDataProvider.class)
+            groups = "Products", dataProvider = "ProductName", dataProviderClass = ProductDataProvider.class,
+            priority = 1)
     public void patchProductName(String productId, String productName) {
         try {
             Response response = productEndpoint.patchProductName(productId, productName);
@@ -88,7 +92,7 @@ public class ProductTest implements TestBase {
      * @param orderBy Criteria to order the list of products
      */
     @Test(description = "Deletes the last added product",
-            groups = "Products")
+            groups = "Products", priority = 2)
     @Parameters({"order", "orderBy"})
     public void deleteLastProduct(String order, String orderBy) {
         try {
