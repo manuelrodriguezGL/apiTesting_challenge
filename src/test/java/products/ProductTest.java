@@ -16,12 +16,6 @@ public class ProductTest implements TestBase {
 
     private ProductEndpoint productEndpoint;
 
-    /*TODO
-    Move post test first
-    Add priority to tests
-    Add Product comparator
-    Refactor tests
-     */
     @Test(description = "Posts a new product to database",
             groups = {"Products"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class,
     priority = 0)
@@ -58,9 +52,10 @@ public class ProductTest implements TestBase {
             priority = 1)
     public void putProductDescription(String productId, String name, String slug, String description) {
         try {
+            String lastProductId = productEndpoint.getLastProductID(ORDER);
             // To have a different description on every run
             description = description + Math.random();
-            Response response = productEndpoint.putProductDescription(productId, name, slug, description);
+            Response response = productEndpoint.putProductDescription(lastProductId, name, slug, description);
             response.then()
                     .assertThat().statusCode(200)
                     .body("description", equalTo(description))
@@ -75,9 +70,11 @@ public class ProductTest implements TestBase {
             priority = 1)
     public void patchProductName(String productId, String productName) {
         try {
-            Response response = productEndpoint.patchProductName(productId, productName);
+            String lastProductId = productEndpoint.getLastProductID(ORDER);
+            Response response = productEndpoint.patchProductName(lastProductId, productName);
             response.then()
                     .assertThat().statusCode(200)
+                    .body("name", equalTo(productName))
                     .log().all();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
@@ -99,7 +96,7 @@ public class ProductTest implements TestBase {
     @Parameters({"order", "orderBy"})
     public void deleteLastProduct(String order, String orderBy) {
         try {
-            String lastProductId = productEndpoint.getLastProductID(ORDER, orderBy);
+            String lastProductId = productEndpoint.getLastProductID(ORDER);
 
             Response response = productEndpoint.deleteProductById(lastProductId);
             response.then()

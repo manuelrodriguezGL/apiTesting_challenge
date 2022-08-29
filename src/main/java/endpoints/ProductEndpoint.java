@@ -141,20 +141,19 @@ public class ProductEndpoint extends BaseEndpoint {
      * @throws Exception
      */
     public List<Product> getProductList(String order, String orderBy) throws Exception {
-        return getProductsSorted(order, orderBy).jsonPath().getList("", Product.class);
+        return getProductsSorted(order, "id").jsonPath().getList("", Product.class);
     }
 
     /**
      * Gets the last added product
      *
      * @param order   Order of sort criteria: ascending or descending
-     * @param orderBy Order by criteria: Field to order the products by
      * @return A String with last added product ID
      * @throws Exception
      */
-    public String getLastProductID(String order, String orderBy) throws Exception {
+    public String getLastProductID(String order) throws Exception {
         // Since we need the last product, we force the 'desc' value
-        List<Product> products = getProductList("desc", orderBy);
+        List<Product> products = getProductList(order, "");
         return products.get(0).getId();
     }
 }
