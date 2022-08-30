@@ -1,19 +1,22 @@
 # Automation Playground API Testing Project
 
-This RestAssured automation project was designed to test Gorilla Logic Automation Playground API http://52.14.147.231/wp-json
+This RestAssured automation project was designed to test Gorilla Logic Automation Playground API
 
 ## How to run it
+
+**NOTE**: If running locally using Docker Playground, set DATA_OVERRIDE parameter to true, found on application.properties file, inside resources' folder.
+This is because that Docker instance deletes all test data.
 
 ### Local run
 In a terminal, run the following maven command:
 
 `mvn clean install -ea -Dtestng.dtd.http=true 
-    -DbaseUrl=http://52.14.147.231/wp-json/wc/v2 
+    -DbaseUrl=<<base_url>> 
     -Dapi_user=auto -Dapi_psw=auto`
     
 Where:
-- baseUrl = API Base URL
-- api_user = User name for the API
+- baseUrl = API Base URL. For example, http://0.0.0.0:8085/wp-json/wc/v3
+- api_user = Username for the API
 - api_psw = Password for the API
 
 ### Jenkins run
@@ -33,19 +36,19 @@ NOTE: There are more secure ways of handling credentials, but for the sake of th
          maven 'Maven 3.6.1' 
      }`   
 
-2. Add skipDefaultCheckout option to cleanup the workspace
+2. Add skipDefaultCheckout option to clean up the workspace
 
  `options {
         // Clean before build options
         skipDefaultCheckout(true)
     }`
 
-3. In your stage steps, first call the cleanup plugin `cleanWs()` Then, configure git to checkout from the desired branch
+3. In your stage steps, first call the cleanup plugin `cleanWs()` Then, configure git to check out from the desired branch
 
 `git branch: 'main',
-    url: 'https://github.com/manuelrodriguezGL/webtesting_challenge.git'`
+    url: 'https://github.com/manuelrodriguezGL/apiTesting_challenge.git'`
 
-4. Setup an environment, where you read the credentials stored in Jenkins credentials manager. Make sure you are using the same credentials ID.
+4. Set up an environment, where you read the credentials stored in Jenkins credentials manager. Make sure you are using the same credentials ID.
  
 ` environment{
     SAUCE_CREDENTIALS = credentials('secret_api')
@@ -54,12 +57,12 @@ NOTE: There are more secure ways of handling credentials, but for the sake of th
 5. Finally, in your steps, call a shell script with maven command, similarly to a local run
 
 `mvn clean install -ea -Dtestng.dtd.http=true 
-    -DbaseUrl=http://52.14.147.231/wp-json/wc/v2 
+    -DbaseUrl=<<base_url>>>> 
     -Dapi_user=auto -Dapi_psw=auto`
     
 Where:
-- baseUrl = API Base URL
-- api_user = User name for the API
+- baseUrl = API Base URL. For example, http://0.0.0.0:8085/wp-json/wc/v3
+- api_user = Username for the API
 - api_psw = Password for the API
 
 NOTE: Don't remove `testng.dtd.http=true`, since it is needed to run it from terminal. That's a workaround for a known TestNG bug.
