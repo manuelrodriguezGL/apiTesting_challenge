@@ -10,6 +10,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import testBase.TestBase;
+import utils.CommonUtils;
 
 public class CustomerTest implements TestBase {
 
@@ -32,7 +33,8 @@ public class CustomerTest implements TestBase {
                     customerEndpoint.createCustomerFromResponse(response), email, first_name, last_name, username, ""
             ));
             softAssert.assertAll(String.format("%s %s %s",
-                    GLOBAL_TEST_FAILED_MESSAGE, "Could not create customer with username :", username));
+                    commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                    "Could not create customer with username :", username));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -40,31 +42,32 @@ public class CustomerTest implements TestBase {
     }
 
     @Test(description = "Get Customers by ID", groups = {"Customers"}, priority = 1)
-    @Parameters({"_customerId"})
-    public void getCustomersByID(String _customerId) {
+    @Parameters({"customerId"})
+    public void getCustomersByID(String customerId) {
         try {
             SoftAssert softAssert = new SoftAssert();
 
-            /* For the sake of this example, I'm getting the last customer added.
-                But I'll leave the parameter so the test can be used both ways
+            /*
+                Given that we are using a test environment, the data could be deleted.
+                That's why tests have an execution priority, and we are getting here the last added ID
+                based on a parameter from properties file
              */
-            // !!!! Comment these lines if using parameters !!!!!!
-            String customerId = customerEndpoint.getLastCustomerID(ORDER);
+            if (Boolean.parseBoolean(commonUtils.getPropertyValue("DATA_OVERRIDE")))
+                customerId = customerEndpoint.getLastCustomerID(commonUtils.getPropertyValue("ORDER"));
+
             Response response = customerEndpoint.getCustomerByID(customerId);
-            // !!!!!!!
-
-            //!!!!! Uncomment this line if using parameters !!!!!
-            // Response response = customerEndpoint.getCustomerByID(_customerId);
-
             response.then().log().all();
 
             softAssert.assertEquals(response.getStatusCode(), 200);
             softAssert.assertEquals(response.jsonPath().get("id").toString(), customerId);
             softAssert.assertAll(String.format("%s %s %s",
-                    GLOBAL_TEST_FAILED_MESSAGE, "Could not find customer with ID :", customerId));
-        } catch (Exception e) {
+                    commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                    "Could not find customer with ID :", customerId));
+        } catch (
+                Exception e) {
             Assert.fail(e.getMessage());
         }
+
     }
 
     @Test(description = "Get Customers by quantity", groups = {"Customers"}, priority = 1)
@@ -78,10 +81,12 @@ public class CustomerTest implements TestBase {
 
             softAssert.assertEquals(response.body().jsonPath().getList("id").size(), Integer.parseInt(quantity),
                     String.format("%s %s %s",
-                            GLOBAL_TEST_FAILED_MESSAGE, "Quantity retrieved is different than requested :", quantity));
+                            commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                            "Quantity retrieved is different than requested :", quantity));
             softAssert.assertEquals(response.getStatusCode(), 200);
             softAssert.assertAll(String.format("%s %s %s",
-                    GLOBAL_TEST_FAILED_MESSAGE, "Could not find customers! Quantity requested :", quantity));
+                    commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                    "Could not find customers! Quantity requested :", quantity));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -93,15 +98,21 @@ public class CustomerTest implements TestBase {
     @Test(description = "Puts a new billing address into existing customer",
             groups = "Customers", dataProvider = "BillingAddress", dataProviderClass = CustomerDataProvider.class,
             priority = 1)
-    public void putCustomerBillingAddress(String _customerId, String first_name, String last_name, String company,
+    public void putCustomerBillingAddress(String customerId, String first_name, String last_name, String company,
                                           String address_1, String address_2, String city, String state,
                                           String postcode, String country, String email, String phone) {
         try {
-
             SoftAssert softAssert = new SoftAssert();
             CustomerComparator customerComparator = new CustomerComparator();
 
-            String customerId = customerEndpoint.getLastCustomerID(ORDER);
+            /*
+                Given that we are using a test environment, the data could be deleted.
+                That's why tests have an execution priority, and we are getting here the last added ID
+                based on a parameter from properties file
+             */
+            if (Boolean.parseBoolean(commonUtils.getPropertyValue("DATA_OVERRIDE")))
+                customerId = customerEndpoint.getLastCustomerID(commonUtils.getPropertyValue("ORDER"));
+
             Response response = customerEndpoint.putCustomerBillingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, state, postcode, country, email, phone);
             response.then().log().all();
@@ -112,7 +123,8 @@ public class CustomerTest implements TestBase {
                     address_1, address_2, city, state, postcode, country, email, phone
             ));
             softAssert.assertAll(String.format("%s %s %s",
-                    GLOBAL_TEST_FAILED_MESSAGE, "Could not PUT billing address for customer ID :", customerId));
+                    commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                    "Could not PUT billing address for customer ID :", customerId));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -124,7 +136,7 @@ public class CustomerTest implements TestBase {
     @Test(description = "Patches an existing customer with a new shipping address",
             groups = "Customers", dataProvider = "ShippingAddress", dataProviderClass = CustomerDataProvider.class,
             priority = 1)
-    public void patchCustomerShippingAddress(String _customerId, String first_name, String last_name, String company,
+    public void patchCustomerShippingAddress(String customerId, String first_name, String last_name, String company,
                                              String address_1, String address_2, String city, String state,
                                              String postcode, String country) {
 
@@ -132,7 +144,14 @@ public class CustomerTest implements TestBase {
             SoftAssert softAssert = new SoftAssert();
             CustomerComparator customerComparator = new CustomerComparator();
 
-            String customerId = customerEndpoint.getLastCustomerID(ORDER);
+            /*
+                Given that we are using a test environment, the data could be deleted.
+                That's why tests have an execution priority, and we are getting here the last added ID
+                based on a parameter from properties file
+             */
+            if (Boolean.parseBoolean(commonUtils.getPropertyValue("DATA_OVERRIDE")))
+                customerId = customerEndpoint.getLastCustomerID(commonUtils.getPropertyValue("ORDER"));
+
             Response response = customerEndpoint.patchCustomerShippingAddress(customerId, first_name, last_name, company,
                     address_1, address_2, city, postcode, country, state);
             response.then().log().all();
@@ -143,7 +162,8 @@ public class CustomerTest implements TestBase {
                     address_1, address_2, city, state, postcode, country));
 
             softAssert.assertAll(String.format("%s %s %s",
-                    GLOBAL_TEST_FAILED_MESSAGE, "Could not PATCH shipping address for customer ID :", customerId));
+                    commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                    "Could not PATCH shipping address for customer ID :", customerId));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -167,7 +187,7 @@ public class CustomerTest implements TestBase {
         try {
             SoftAssert softAssert = new SoftAssert();
 
-            String customerId = customerEndpoint.getLastCustomerID(ORDER);
+            String customerId = customerEndpoint.getLastCustomerID(commonUtils.getPropertyValue("ORDER"));
 
             Response response = customerEndpoint.deleteCustomerByID(customerId);
             response.then().log().all();
@@ -177,7 +197,8 @@ public class CustomerTest implements TestBase {
             softAssert.assertEquals(response.getStatusCode(), 200);
             softAssert.assertEquals(deletedResponse.getStatusCode(), 404,
                     String.format("%s %s %s",
-                            GLOBAL_TEST_FAILED_MESSAGE, "Could not delete customer with ID :", customerId));
+                            commonUtils.getPropertyValue("GLOBAL_TEST_FAILED_MESSAGE") + "\n",
+                            "Could not delete customer with ID :", customerId));
             softAssert.assertAll();
         } catch (Exception e) {
             Assert.fail(e.getMessage());

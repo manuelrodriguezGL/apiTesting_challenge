@@ -18,7 +18,7 @@ public class ProductTest implements TestBase {
 
     @Test(description = "Posts a new product to database",
             groups = {"Products"}, dataProvider = "ProductFaker", dataProviderClass = ProductDataProvider.class,
-    priority = 0)
+            priority = 0)
     public void postProduct(String name, String slug, String description) {
         try {
             Response response = productEndpoint.postProduct(name, slug, description);
@@ -52,10 +52,18 @@ public class ProductTest implements TestBase {
             priority = 1)
     public void putProductDescription(String productId, String name, String slug, String description) {
         try {
-            String lastProductId = productEndpoint.getLastProductID(ORDER);
+
+            /*
+                Given that we are using a test environment, the data could be deleted.
+                That's why tests have an execution priority, and we are getting here the last added ID
+                based on a parameter from properties file
+             */
+            if (Boolean.parseBoolean(commonUtils.getPropertyValue("DATA_OVERRIDE")))
+                productId = productEndpoint.getLastProductID(commonUtils.getPropertyValue("ORDER"));
+
             // To have a different description on every run
             description = description + Math.random();
-            Response response = productEndpoint.putProductDescription(lastProductId, name, slug, description);
+            Response response = productEndpoint.putProductDescription(productId, name, slug, description);
             response.then()
                     .assertThat().statusCode(200)
                     .body("description", equalTo(description))
@@ -70,8 +78,15 @@ public class ProductTest implements TestBase {
             priority = 1)
     public void patchProductName(String productId, String productName) {
         try {
-            String lastProductId = productEndpoint.getLastProductID(ORDER);
-            Response response = productEndpoint.patchProductName(lastProductId, productName);
+            /*
+                Given that we are using a test environment, the data could be deleted.
+                That's why tests have an execution priority, and we are getting here the last added ID
+                based on a parameter from properties file
+             */
+            if (Boolean.parseBoolean(commonUtils.getPropertyValue("DATA_OVERRIDE")))
+                productId = productEndpoint.getLastProductID(commonUtils.getPropertyValue("ORDER"));
+
+            Response response = productEndpoint.patchProductName(productId, productName);
             response.then()
                     .assertThat().statusCode(200)
                     .body("name", equalTo(productName))
@@ -96,7 +111,7 @@ public class ProductTest implements TestBase {
     @Parameters({"order", "orderBy"})
     public void deleteLastProduct(String order, String orderBy) {
         try {
-            String lastProductId = productEndpoint.getLastProductID(ORDER);
+            String lastProductId = productEndpoint.getLastProductID("ORDER");
 
             Response response = productEndpoint.deleteProductById(lastProductId);
             response.then()
