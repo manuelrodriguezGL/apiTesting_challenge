@@ -10,7 +10,7 @@ This is because that Docker instance deletes all test data.
 ### Local run
 In a terminal, run the following maven command:
 
-`mvn clean install -ea -Dtestng.dtd.http=true 
+`mvn clean install -Dtestng.dtd.http=true 
     -DbaseUrl=<<base_url>> 
     -Dapi_user=auto -Dapi_psw=auto`
     
@@ -18,6 +18,11 @@ Where:
 - baseUrl = API Base URL. For example, http://0.0.0.0:8085/wp-json/wc/v3
 - api_user = Username for the API
 - api_psw = Password for the API
+
+Example:
+`mvn clean install -Dtestng.dtd.http=true
+-DbaseUrl=http://0.0.0.0:8085/wp-json/wc/v3
+-Dapi_user=auto -Dapi_psw=auto`
 
 ### Jenkins run
 
@@ -56,7 +61,7 @@ NOTE: There are more secure ways of handling credentials, but for the sake of th
 
 5. Finally, in your steps, call a shell script with maven command, similarly to a local run
 
-`mvn clean install -ea -Dtestng.dtd.http=true 
+`mvn clean install -Dtestng.dtd.http=true 
     -DbaseUrl=<<base_url>>>> 
     -Dapi_user=auto -Dapi_psw=auto`
     

@@ -111,7 +111,7 @@ public class ProductTest implements TestBase {
     @Parameters({"order", "orderBy"})
     public void deleteLastProduct(String order, String orderBy) {
         try {
-            String lastProductId = productEndpoint.getLastProductID("ORDER");
+            String lastProductId = productEndpoint.getLastProductID(commonUtils.getPropertyValue("ORDER"));
 
             Response response = productEndpoint.deleteProductById(lastProductId);
             response.then()
