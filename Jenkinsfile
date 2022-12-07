@@ -27,7 +27,7 @@ pipeline{
                 sh('echo Reading Password...')
                 sh 'mvn clean install -Dtestng.dtd.http=true -Dapi_user=$API_CREDENTIALS_USR ' +
                     '-Dapi_psw=$API_CREDENTIALS_PSW ' +
-                    '-DbaseUrl=http://52.14.147.231/wp-json/wc/v2'
+                    '-DbaseUrl=http://0.0.0.0:8085/wp-json/wc/v3'
             }
         }
     }
