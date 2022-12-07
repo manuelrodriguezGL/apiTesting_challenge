@@ -6,21 +6,13 @@ import listeners.TestExecutionListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
+import utils.CommonUtils;
 
 @Listeners(TestExecutionListener.class)
-public class TestBase {
+public interface TestBase {
 
-    protected final String ORDER = "desc";
-    protected final String GLOBAL_TEST_FAILED_MESSAGE = "Test execution failed! Message: \n";
-    protected RequestSpecification requestSpecification;
-
-    protected String baseUrl = "";
+    CommonUtils commonUtils = new CommonUtils();
 
     @BeforeMethod(alwaysRun = true)
-    @Parameters({"baseUrl", "api_user", "api_psw"})
-    public void authenticate(String _baseUrl, String usr, String psw) {
-        baseUrl = _baseUrl;
-        BaseEndpoint baseEndpoint = new BaseEndpoint(_baseUrl);
-        requestSpecification = baseEndpoint.authenticate(usr, psw);
-    }
+    public void testSetup(String _baseUrl, String endpointPath, String usr, String psw);
 }

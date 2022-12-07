@@ -16,8 +16,8 @@ Can be improved?
             .put(endpointPath);
         return response;
 
-- postCustomer and other tests is just checking status code, try to see if there are more criteria to validate.
-- product tests are checking just status code as well
+- postCustomer and other tests is just checking status code, try to see if there are more criteria to validate. DONE
+- product tests are checking just status code as well DONE
 
 +++++++++++++++++++++++++
 PROS

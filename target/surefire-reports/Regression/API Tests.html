@@ -1,0 +1,134 @@
+<html>
+<head>
+<title>TestNG:  API Tests</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>API Tests</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>11/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Tue Sep 20 20:47:33 CST 2022</td>
+</tr>
+<tr><td>Total time:</td><td>6 seconds (6624 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td>Products Customers </td>
+</tr><tr>
+<td>Excluded groups:</td><td>excluded </td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='customers.CustomerTest.deleteLastCustomer()'><b>deleteLastCustomer</b><br>Test class: customers.CustomerTest<br>Test method: Deletes the last added customer<br>Parameters: desc, id, customer</td>
+<td></td>
+<td>0</td>
+<td>customers.CustomerTest@6279cee3</td></tr>
+<tr>
+<td title='products.ProductTest.deleteLastProduct()'><b>deleteLastProduct</b><br>Test class: products.ProductTest<br>Test method: Deletes the last added product<br>Parameters: desc, id</td>
+<td></td>
+<td>0</td>
+<td>products.ProductTest@4206a205</td></tr>
+<tr>
+<td title='customers.CustomerTest.getCustomersByID()'><b>getCustomersByID</b><br>Test class: customers.CustomerTest<br>Test method: Get Customers by ID<br>Parameters: 31</td>
+<td></td>
+<td>0</td>
+<td>customers.CustomerTest@6279cee3</td></tr>
+<tr>
+<td title='customers.CustomerTest.getCustomersByQuantity()'><b>getCustomersByQuantity</b><br>Test class: customers.CustomerTest<br>Test method: Get Customers by quantity<br>Parameters: 1, customer</td>
+<td></td>
+<td>0</td>
+<td>customers.CustomerTest@6279cee3</td></tr>
+<tr>
+<td title='products.ProductTest.getProductsByQuantity()'><b>getProductsByQuantity</b><br>Test class: products.ProductTest<br>Test method: Gets a predefined number of products<br>Parameters: 1</td>
+<td></td>
+<td>0</td>
+<td>products.ProductTest@4206a205</td></tr>
+<tr>
+<td title='customers.CustomerTest.patchCustomerShippingAddress()'><b>patchCustomerShippingAddress</b><br>Test class: customers.CustomerTest<br>Test method: Patches an existing customer with a new shipping address<br>Parameters: 155, Akira, Jimbo, Drum Co, 1 Aeroport Way, 306, Miami, Florida, 33121, United States</td>
+<td></td>
+<td>0</td>
+<td>customers.CustomerTest@6279cee3</td></tr>
+<tr>
+<td title='products.ProductTest.patchProductName()'><b>patchProductName</b><br>Test class: products.ProductTest<br>Test method: Patches an existing product with a new name<br>Parameters: 15, Gorgeous Silk Pants</td>
+<td></td>
+<td>0</td>
+<td>products.ProductTest@4206a205</td></tr>
+<tr>
+<td title='customers.CustomerTest.postCustomer()'><b>postCustomer</b><br>Test class: customers.CustomerTest<br>Test method: Post a new customer to database and validates it was created<br>Parameters: nelle.ziemann@example.com, Travis, Robel, colby.dibbert, kdtdc</td>
+<td></td>
+<td>1</td>
+<td>customers.CustomerTest@6279cee3</td></tr>
+<tr>
+<td title='products.ProductTest.postProduct()'><b>postProduct</b><br>Test class: products.ProductTest<br>Test method: Posts a new product to database<br>Parameters: Mediocre Rubber Shoes, B000NKUUKW, Eum hic tempora officiis numquam quo perferendis consectetur aut sunt placeat delectus excepturi ut quod hic aut velit laboriosam a vel ad maxime molestiae quod aliquid quaerat modi et non ut consequatur sed molestiae est asperiores modi ipsam eum ut in ducimus voluptates voluptatibus enim qui quas eos distinctio ut dolore totam quasi ea sed aliquam voluptas non commodi nihil quis nostrum qui sapiente vel eum facere quae nihil ad nam non dolorum voluptatem dolores et quidem voluptas iusto voluptatibus vel quo cum aliquid at inventore praesentium facilis deserunt adipisci dolorem consequatur ut illum voluptatem minima incidunt molestiae rerum error facilis vitae natus.</td>
+<td></td>
+<td>0</td>
+<td>products.ProductTest@4206a205</td></tr>
+<tr>
+<td title='customers.CustomerTest.putCustomerBillingAddress()'><b>putCustomerBillingAddress</b><br>Test class: customers.CustomerTest<br>Test method: Puts a new billing address into existing customer<br>Parameters: 11, Anila, Niles, Drum Co, 1 Aeropost Way, 306, Miami, Florida, 33122, United States, ajimbo@mail.com, +12233445566</td>
+<td></td>
+<td>0</td>
+<td>customers.CustomerTest@6279cee3</td></tr>
+<tr>
+<td title='products.ProductTest.putProductDescription()'><b>putProductDescription</b><br>Test class: products.ProductTest<br>Test method: Puts a new description into existing product<br>Parameters: 11, V-Neck T-Shirt, v-neck-t-shirt, Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Proin eget tortor risus. Cras ultricies ligula sed magna dictum porta. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Nulla quis lorem ut libero malesuada feugiat.</td>
+<td></td>
+<td>0</td>
+<td>products.ProductTest@4206a205</td></tr>
+</table><p>
+</body>
+</html>

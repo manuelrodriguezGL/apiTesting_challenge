@@ -1,5 +1,8 @@
 package payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ShippingAddress extends AbstractAddress {
     public ShippingAddress() {
     }

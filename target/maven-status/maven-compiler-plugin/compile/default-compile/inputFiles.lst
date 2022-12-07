@@ -1,0 +1,17 @@
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/payload/Customer.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/endpoints/BaseEndpoint.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/logger/EventLogger.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/dataProviders/CustomerDataProvider.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/payload/Product.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/payload/BillingAddress.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/comparators/CustomerComparator.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/listeners/TestExecutionListener.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/utils/CommonUtils.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/payload/ShippingAddress.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/endpoints/ProductEndpoint.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/endpoints/CustomerEndpoint.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/utils/FakeDataGenerator.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/utils/ExcelFileReader.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/dataProviders/BaseDataProvider.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/payload/AbstractAddress.java
+/Users/manuel.rodriguez/repo/apiTesting_challenge/src/main/java/dataProviders/ProductDataProvider.java

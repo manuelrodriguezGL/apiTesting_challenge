@@ -1,0 +1,17 @@
+payload/AbstractAddress.class
+dataProviders/ProductDataProvider.class
+payload/BillingAddress.class
+utils/FakeDataGenerator.class
+dataProviders/BaseDataProvider.class
+comparators/CustomerComparator.class
+listeners/TestExecutionListener.class
+payload/ShippingAddress.class
+endpoints/BaseEndpoint.class
+endpoints/CustomerEndpoint.class
+logger/EventLogger.class
+dataProviders/CustomerDataProvider.class
+utils/CommonUtils.class
+payload/Customer.class
+utils/ExcelFileReader.class
+endpoints/ProductEndpoint.class
+payload/Product.class
