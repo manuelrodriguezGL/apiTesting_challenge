@@ -63,7 +63,7 @@ NOTE: There are more secure ways of handling credentials, but for the sake of th
 
 `mvn clean install -Dtestng.dtd.http=true 
     -DbaseUrl=<<base_url>>>> 
-    -Dapi_user=auto -Dapi_psw=auto`
+    -Dapi_user=$API_CREDENTIALS_USR -Dapi_psw=$API_CREDENTIALS_PSW`
     
 Where:
 - baseUrl = API Base URL. For example, http://0.0.0.0:8085/wp-json/wc/v3
